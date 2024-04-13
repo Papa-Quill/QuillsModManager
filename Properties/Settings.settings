@@ -1,0 +1,66 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="QMM.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ButtonColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">16, 16, 20</Value>
+    </Setting>
+    <Setting Name="WarningColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">255, 50, 75</Value>
+    </Setting>
+    <Setting Name="BGPrimary" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">16, 16, 20</Value>
+    </Setting>
+    <Setting Name="BGSecondary" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">20, 20, 26</Value>
+    </Setting>
+    <Setting Name="NotifColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Red</Value>
+    </Setting>
+    <Setting Name="DetailColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">60, 60, 66</Value>
+    </Setting>
+    <Setting Name="BGTertiary" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">25, 25, 31</Value>
+    </Setting>
+    <Setting Name="DetailActive" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Cyan</Value>
+    </Setting>
+    <Setting Name="PlaceholderColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">193, 200, 207</Value>
+    </Setting>
+    <Setting Name="TextColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">White</Value>
+    </Setting>
+    <Setting Name="SuccessColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Lime</Value>
+    </Setting>
+    <Setting Name="SelectedColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">White</Value>
+    </Setting>
+    <Setting Name="Version" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0.0</Value>
+    </Setting>
+    <Setting Name="HotKeyForm" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="TxtNotif" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LabelMessage</Value>
+    </Setting>
+    <Setting Name="BorderRadius" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">8</Value>
+    </Setting>
+    <Setting Name="RoundedControls" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="FormShadows" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="ToolTips" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="GameDir" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+  </Settings>
+</SettingsFile>

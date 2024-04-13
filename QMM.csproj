@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{007A54D9-3E6E-4E09-B9F8-5B79D3A26ED1}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>QMM</RootNamespace>
+    <AssemblyName>QMM</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>QuillDiamondNew64.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Guna.UI2">
+      <HintPath>lib\Guna.UI2.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Info_Forms\FHotKeys.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Info_Forms\FHotKeys.Designer.cs">
+      <DependentUpon>FHotKeys.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Info_Forms\FMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Info_Forms\FMessageBox.Designer.cs">
+      <DependentUpon>FMessageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Info_Forms\FModInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Info_Forms\FModInfo.Designer.cs">
+      <DependentUpon>FModInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Info_Forms\FNotification.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Info_Forms\FNotification.Designer.cs">
+      <DependentUpon>FNotification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Info_Forms\MainInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Info_Forms\MainInfoForm.Designer.cs">
+      <DependentUpon>MainInfoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="QMM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="QMM.Designer.cs">
+      <DependentUpon>QMM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserControls\UserSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserControls\UserSettings.Designer.cs">
+      <DependentUpon>UserSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Util\CContextMenuStrip.cs" />
+    <Compile Include="Util\CFileManager.cs" />
+    <Compile Include="Util\CFormUtil.cs" />
+    <Compile Include="Util\CMessageBox.cs" />
+    <Compile Include="Util\CModListManager.cs" />
+    <Compile Include="Util\CNotification.cs" />
+    <Compile Include="Util\CScrollBarRenderer.cs" />
+    <Compile Include="Util\FColorSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Util\FColorSelector.Designer.cs">
+      <DependentUpon>FColorSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Util\CToolTipUtil.cs" />
+    <Compile Include="Util\CUpdateTheme.cs" />
+    <Compile Include="Util\OToolTip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <EmbeddedResource Include="Info_Forms\FHotKeys.resx">
+      <DependentUpon>FHotKeys.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Info_Forms\FMessageBox.resx">
+      <DependentUpon>FMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Info_Forms\FModInfo.resx">
+      <DependentUpon>FModInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Info_Forms\FNotification.resx">
+      <DependentUpon>FNotification.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Info_Forms\MainInfoForm.resx">
+      <DependentUpon>MainInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QMM.resx">
+      <DependentUpon>QMM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="UserControls\UserSettings.resx">
+      <DependentUpon>UserSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\FColorSelector.resx">
+      <DependentUpon>FColorSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="QuillDiamondNew64.ico" />
+    <None Include="Resources\NoImage.png" />
+    <None Include="Resources\AnimatedQuillDiamond.gif" />
+    <None Include="Resources\QuillDiamondNew64.ico" />
+    <None Include="Resources\AppIcon.ico" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
