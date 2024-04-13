@@ -14,3 +14,7 @@ Video overview of how to use this application: https://www.youtube.com/watch?v=p
 - Backup and restore game files and save data
 - Hotkey system for efficient user interactions
 - Highly customizable user settings
+
+## Preview
+
+![Application Preview](https://cdn.discordapp.com/attachments/883181891744858152/1228746548670627990/image.png?ex=662d2a66&is=661ab566&hm=889c062ab8c3f4dc244c96bdc744a56e7595843fa0dcaa52136615d6657d5a1a&)
