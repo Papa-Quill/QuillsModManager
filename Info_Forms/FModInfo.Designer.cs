@@ -60,7 +60,7 @@
             this.LabelModAuthor.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::QMM.Properties.Settings.Default, "TextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.LabelModAuthor.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.LabelModAuthor.ForeColor = global::QMM.Properties.Settings.Default.TextColor;
-            this.LabelModAuthor.Location = new System.Drawing.Point(6, 485);
+            this.LabelModAuthor.Location = new System.Drawing.Point(6, 488);
             this.LabelModAuthor.Name = "LabelModAuthor";
             this.LabelModAuthor.Size = new System.Drawing.Size(132, 21);
             this.LabelModAuthor.TabIndex = 13;
@@ -75,7 +75,7 @@
             this.LabelModVersion.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::QMM.Properties.Settings.Default, "TextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.LabelModVersion.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.LabelModVersion.ForeColor = global::QMM.Properties.Settings.Default.TextColor;
-            this.LabelModVersion.Location = new System.Drawing.Point(137, 485);
+            this.LabelModVersion.Location = new System.Drawing.Point(137, 488);
             this.LabelModVersion.Name = "LabelModVersion";
             this.LabelModVersion.Size = new System.Drawing.Size(58, 21);
             this.LabelModVersion.TabIndex = 13;
@@ -189,7 +189,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = global::QMM.Properties.Settings.Default.BGPrimary;
-            this.ClientSize = new System.Drawing.Size(200, 516);
+            this.ClientSize = new System.Drawing.Size(200, 521);
             this.Controls.Add(this.BtnLaunchMod);
             this.Controls.Add(this.LabelModVersion);
             this.Controls.Add(this.LabelModAuthor);
@@ -202,6 +202,7 @@
             this.Name = "FModInfo";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "FModInfo";
+            this.TopMost = true;
             ((System.ComponentModel.ISupportInitialize)(this.ImgIcon)).EndInit();
             this.ResumeLayout(false);
 
