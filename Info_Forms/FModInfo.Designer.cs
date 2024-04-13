@@ -202,7 +202,6 @@
             this.Name = "FModInfo";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "FModInfo";
-            this.TopMost = true;
             ((System.ComponentModel.ISupportInitialize)(this.ImgIcon)).EndInit();
             this.ResumeLayout(false);
 
