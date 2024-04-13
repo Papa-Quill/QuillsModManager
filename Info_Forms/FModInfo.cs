@@ -79,7 +79,7 @@ namespace QMM.Info_Forms
         #endregion
 
         public void SetLocationRelativeToForm1()
-        { Location = new Point(mainFormInstance.Location.X + 805, mainFormInstance.Location.Y); }
+        { Location = new Point(mainFormInstance.Location.X + 648, mainFormInstance.Location.Y); }
 
         private void BtnLaunchMod_Click(object sender, EventArgs e)
         {
