@@ -39,7 +39,7 @@
       <Value Profile="(Default)">White</Value>
     </Setting>
     <Setting Name="Version" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1.0.1</Value>
+      <Value Profile="(Default)">1.0.2</Value>
     </Setting>
     <Setting Name="HotKeyForm" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
