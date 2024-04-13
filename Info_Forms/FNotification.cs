@@ -1,16 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
-using System;
-using System.Windows.Forms;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace QMM.Info_Forms
 {
     public partial class FNotification : Form
     {
+        #region Variables
         readonly Timer CloseTimer = new Timer();
         readonly Timer T1 = new Timer();
         private static readonly List<FNotification> activeNotifications = new List<FNotification>();
+        #endregion
 
         public FNotification()
         {
@@ -33,7 +35,7 @@ namespace QMM.Info_Forms
             }
 
             activeNotifications.Add(this);
-            this.FormClosed += Notification_FormClosed;
+            FormClosed += Notification_FormClosed;
             TxtNotif.Text = Properties.Settings.Default.TxtNotif;
             PanelNotifColor.FillColor = Properties.Settings.Default.NotifColor;
         }

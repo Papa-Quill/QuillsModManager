@@ -7,8 +7,10 @@ namespace QMM.Util
 {
     public partial class FHotKeys : Form
     {
+        #region Variables
         readonly Timer CloseTimer = new Timer();
         readonly Timer T1 = new Timer();
+        #endregion
 
         public FHotKeys()
         {

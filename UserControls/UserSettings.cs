@@ -1,5 +1,4 @@
-﻿using QMM.Info_Forms;
-using QMM.Util;
+﻿using QMM.Util;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -88,6 +87,30 @@ namespace QMM
         private void InvalidColor()
         {
             CNotification.CreateNotif(Properties.Settings.Default.WarningColor, "Invalid Color! Example: #00FFFF or Cyan");
+        }
+
+        void CopyDirectory(string sourceDir, string destinationDir, bool directoriesOnly, string progressMessage)
+        {
+            if (!Directory.Exists(destinationDir)) Directory.CreateDirectory(destinationDir);
+            var dir = new DirectoryInfo(sourceDir);
+            if (!dir.Exists)
+                throw new DirectoryNotFoundException($"Source directory not found: {dir.FullName}");
+
+            if (!directoriesOnly)
+            {
+                foreach (string file in Directory.GetFiles(sourceDir))
+                {
+                    string targetFilePath = Path.Combine(destinationDir, Path.GetFileName(file));
+                    File.Copy(file, targetFilePath, true);
+                }
+            }
+
+            DirectoryInfo[] dirs = dir.GetDirectories();
+            foreach (DirectoryInfo subDir in dirs)
+            {
+                string newDestinationDir = Path.Combine(destinationDir, subDir.Name);
+                CopyDirectory(subDir.FullName, newDestinationDir, false, progressMessage);
+            }
         }
 
         private void TxtNumCheck_KeyPress(object sender, KeyPressEventArgs e)
@@ -252,6 +275,16 @@ namespace QMM
             }
             CNotification.CreateNotif(Properties.Settings.Default.WarningColor, "Could not find Castle Crashers userdata directory!");
         }
+
+        private void BtnSelectGameDir_Click(object sender, EventArgs e)
+        {
+            CFileManager.SelectGameDirectory();
+        }
+
+        private void BtnOpenAppDir_Click(object sender, EventArgs e)
+        {
+            Process.Start("explorer.exe", AppDomain.CurrentDomain.BaseDirectory);
+        }
         #endregion
 
         #region Other control functions
@@ -339,39 +372,5 @@ namespace QMM
         private void BtnRoundControls_MouseHover(object sender, EventArgs e)
         { CToolTipUtil.SetToolTip(BtnRoundButtons, "Rounded amount set in the text box above"); }
         #endregion
-
-        void CopyDirectory(string sourceDir, string destinationDir, bool directoriesOnly, string progressMessage)
-        {
-            if (!Directory.Exists(destinationDir)) Directory.CreateDirectory(destinationDir);
-            var dir = new DirectoryInfo(sourceDir);
-            if (!dir.Exists)
-                throw new DirectoryNotFoundException($"Source directory not found: {dir.FullName}");
-
-            if (!directoriesOnly)
-            {
-                foreach (string file in Directory.GetFiles(sourceDir))
-                {
-                    string targetFilePath = Path.Combine(destinationDir, Path.GetFileName(file));
-                    File.Copy(file, targetFilePath, true);
-                }
-            }
-
-            DirectoryInfo[] dirs = dir.GetDirectories();
-            foreach (DirectoryInfo subDir in dirs)
-            {
-                string newDestinationDir = Path.Combine(destinationDir, subDir.Name);
-                CopyDirectory(subDir.FullName, newDestinationDir, false, progressMessage);
-            }
-        }
-
-        private void BtnSelectGameDir_Click(object sender, EventArgs e)
-        {
-            CFileManager.SelectGameDirectory();
-        }
-
-        private void OpenAppDir_Click(object sender, EventArgs e)
-        {
-            Process.Start("explorer.exe", AppDomain.CurrentDomain.BaseDirectory);
-        }
     }
 }

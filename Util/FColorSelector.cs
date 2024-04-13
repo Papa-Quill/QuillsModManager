@@ -1,5 +1,4 @@
-﻿using QMM.Info_Forms;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -23,7 +22,7 @@ namespace QMM.Util
                 BtnClose, BtnColorPicker, BtnFinishSelection,
                 TxtHexColor, TxtRGBColor, PanelColorPreview };
             CUpdateTheme.Refresh(this, controlsToModify);
-            PanelColorPreview.MouseClick += PanelColorPreview_MouseClick;   
+            PanelColorPreview.MouseClick += PanelColorPreview_MouseClick;
             InitializeTimers();
         }
 

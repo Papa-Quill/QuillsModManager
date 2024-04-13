@@ -288,7 +288,7 @@ namespace QMM
             this.BtnOpenAppDir.Size = new System.Drawing.Size(182, 45);
             this.BtnOpenAppDir.TabIndex = 6;
             this.BtnOpenAppDir.Text = "Open Application Dir";
-            this.BtnOpenAppDir.Click += new System.EventHandler(this.OpenAppDir_Click);
+            this.BtnOpenAppDir.Click += new System.EventHandler(this.BtnOpenAppDir_Click);
             // 
             // BtnSelectGameDir
             // 

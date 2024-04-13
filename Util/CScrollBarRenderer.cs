@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
 
-namespace QMM.Util {
+namespace QMM.Util
+{
     public class CustomScrollbarRenderer : ToolStripSystemRenderer
     {
         protected override void OnRenderToolStripBackground(ToolStripRenderEventArgs e)

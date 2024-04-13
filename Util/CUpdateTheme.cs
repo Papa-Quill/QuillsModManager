@@ -1,5 +1,4 @@
 ﻿using Guna.UI2.WinForms;
-using QMM.Util;
 using System.Windows.Forms;
 
 namespace QMM.Util

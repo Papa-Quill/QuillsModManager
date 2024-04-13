@@ -8,13 +8,10 @@ namespace QMM.Info_Forms
 {
     public partial class FModInfo : Form
     {
-        private MainForm mainFormInstance;
-
-        private string modTitle;
-        private string modAuthor;
-        private string modVersion;
-        private string modDescription;
-        private string modLocation;
+        #region Variables
+        private readonly MainForm mainFormInstance;
+        private string modTitle, modAuthor, modVersion, modDescription, modLocation;
+        #endregion
 
         public FModInfo(MainForm mainFormInstance, string modTitle, string modAuthor, string modVersion, string modDescription, string modLocation)
         {
@@ -32,6 +29,23 @@ namespace QMM.Info_Forms
             LoadModData();
         }
 
+        #region Form base
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams ShadowParams = base.CreateParams;
+                if (Properties.Settings.Default.FormShadows)
+                {
+                    ShadowParams.ExStyle |= 0x02000000;
+                    ShadowParams.ClassStyle |= 0x00020000;
+                }
+                return ShadowParams;
+            }
+        }
+        #endregion
+
+        #region Functions
         private void LoadModData()
         {
             TxtModTitle.Text = modTitle;
@@ -62,25 +76,11 @@ namespace QMM.Info_Forms
             SetLocationRelativeToForm1();
         }
 
-        #region Form base
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams ShadowParams = base.CreateParams;
-                if (Properties.Settings.Default.FormShadows)
-                {
-                    ShadowParams.ExStyle |= 0x02000000;
-                    ShadowParams.ClassStyle |= 0x00020000;
-                }
-                return ShadowParams;
-            }
-        }
-        #endregion
-
         public void SetLocationRelativeToForm1()
         { Location = new Point(mainFormInstance.Location.X + 648, mainFormInstance.Location.Y); }
+        #endregion
 
+        #region Button Functions
         private void BtnLaunchMod_Click(object sender, EventArgs e)
         {
             if (Directory.Exists(modLocation))
@@ -108,5 +108,6 @@ namespace QMM.Info_Forms
                 }
             }
         }
+        #endregion
     }
 }

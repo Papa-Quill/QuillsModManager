@@ -14,13 +14,20 @@ namespace QMM
 {
     public partial class MainForm : Form
     {
+        #region Variables
         public static FModInfo fModInfo;
-        public static bool RefreshQueued = false;
         public string gameDir = Properties.Settings.Default.GameDir;
         public string backupFolder = AppDomain.CurrentDomain.BaseDirectory + "\\Backup";
         public string dataFolder = Properties.Settings.Default.GameDir + "\\data";
         public string userDataFolder = "C:\\Program Files (x86)\\Steam\\userdata";
+        public static bool RefreshQueued = false;
         private readonly Timer RefreshTimer;
+
+        private const int ButtonWidth = 350;
+        private const int ButtonHeight = 30;
+        private const int VerticalSpacing = 10;
+        private int currentY = 0;
+        #endregion
 
         public MainForm()
         {
@@ -33,25 +40,11 @@ namespace QMM
                 BtnRestoreSave };
             CUpdateTheme.Refresh(this, controlsToModify);
             CreateButtonsFromModTitles();
+
             RefreshTimer = new Timer();
             RefreshTimer.Interval = 1000;
             RefreshTimer.Tick += Timer_Tick;
             RefreshTimer.Start();
-        }
-
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            if (RefreshQueued)
-            {
-                var controlsToModify = new Control[] {
-                    BtnClose, BtnMinimize, BtnInfo, BtnUserSettings,
-                    BtnAddMod, BtnRefreshModList, BtnRemoveMod, BtnLaunchGame,
-                    BtnCloseInfo, BtnCreateBackup, BtnRestoreBackup, BtnBackupSave,
-                    BtnRestoreSave };
-                CUpdateTheme.Refresh(this, controlsToModify);
-                CreateButtonsFromModTitles();
-                RefreshQueued = false;
-            }
         }
 
         #region Hotkeys
@@ -145,10 +138,31 @@ namespace QMM
             fModInfo.SetLocationRelativeToForm1();
         }
 
-        private const int ButtonWidth = 350;
-        private const int ButtonHeight = 30;
-        private const int VerticalSpacing = 10;
-        private int currentY = 0;
+        static int DirectoryFileMeasurement(string dir, bool directoriesOnly)
+        {
+            int count = 0;
+            if (!directoriesOnly) count += Directory.GetFiles(dir).Length;
+            foreach (string subDir in Directory.GetDirectories(dir))
+            {
+                count += DirectoryFileMeasurement(subDir, false);
+            }
+            return count;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (RefreshQueued)
+            {
+                var controlsToModify = new Control[] {
+                    BtnClose, BtnMinimize, BtnInfo, BtnUserSettings,
+                    BtnAddMod, BtnRefreshModList, BtnRemoveMod, BtnLaunchGame,
+                    BtnCloseInfo, BtnCreateBackup, BtnRestoreBackup, BtnBackupSave,
+                    BtnRestoreSave };
+                CUpdateTheme.Refresh(this, controlsToModify);
+                CreateButtonsFromModTitles();
+                RefreshQueued = false;
+            }
+        }
 
         private void BtnCreateButtons_Click(object sender, EventArgs e)
         {
@@ -216,7 +230,7 @@ namespace QMM
                     contextMenu.Items.Add(moveDownMenuItem);
 
                     ToolStripMenuItem deleteMenuItem = new ToolStripMenuItem("Delete");
-                    deleteMenuItem.Click += (sender, e) => DeleteModItem(mod.ModTitle, mod.ModVersion); 
+                    deleteMenuItem.Click += (sender, e) => DeleteModItem(mod.ModTitle, mod.ModVersion);
                     contextMenu.Items.Add(deleteMenuItem);
 
                     button.ContextMenuStrip = contextMenu;
@@ -523,18 +537,6 @@ namespace QMM
 
         private void BtnCloseInfo_Click(object sender, EventArgs e)
         { CFormUtil.CloseAllOpenModInfoForms(); }
-        #endregion
-
-        static int DirectoryFileMeasurement(string dir, bool directoriesOnly)
-        {
-            int count = 0;
-            if (!directoriesOnly) count += Directory.GetFiles(dir).Length;
-            foreach (string subDir in Directory.GetDirectories(dir))
-            {
-                count += DirectoryFileMeasurement(subDir, false);
-            }
-            return count;
-        }
 
         private void BtnRestoreBackup_Click(object sender, EventArgs e)
         {
@@ -621,5 +623,6 @@ namespace QMM
                 }
             }
         }
+        #endregion
     }
 }

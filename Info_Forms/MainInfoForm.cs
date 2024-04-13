@@ -72,14 +72,15 @@ namespace QMM.Info_Forms
         { CFormUtil.Close(this); }
         #endregion
 
-        private void LabelWatermark_Click(object sender, EventArgs e)
-        {
-            Process.Start("https://github.com/Papa-Quill/");
-        }
-
+        #region Button Functions
         private void BtnJoinDiscord_Click(object sender, EventArgs e)
         {
             Process.Start("https://discord.gg/NdPYPbUncU");
         }
+        private void LabelWatermark_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://github.com/Papa-Quill/");
+        }
+        #endregion
     }
 }
