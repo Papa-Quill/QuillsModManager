@@ -5,27 +5,51 @@ namespace QMM.Util
 {
     public static class CFileManager
     {
-        public static void SelectGameDirectory()
+        public static string SelectDirectory(string title, string defaultFolderName, string warningMessage)
         {
             using (var folderBrowserDialog = new OpenFileDialog())
             {
-                folderBrowserDialog.Title = "Select Game Directory";
+                folderBrowserDialog.Title = title;
                 folderBrowserDialog.CheckFileExists = false;
                 folderBrowserDialog.CheckPathExists = true;
-                folderBrowserDialog.FileName = "Select Folder";
+                folderBrowserDialog.FileName = defaultFolderName;
                 folderBrowserDialog.Filter = "Folders|\n";
 
-                if (folderBrowserDialog.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(Path.GetDirectoryName(folderBrowserDialog.FileName)))
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
                 {
-                    Properties.Settings.Default.GameDir = Path.GetDirectoryName(folderBrowserDialog.FileName);
+                    return Path.GetDirectoryName(folderBrowserDialog.FileName);
                 }
                 else
                 {
-                    folderBrowserDialog.Dispose();
-                    CNotification.CreateNotif(Properties.Settings.Default.WarningColor, "You did not choose a game directory!");
+                    CNotification.CreateNotif(Properties.Settings.Default.WarningColor, warningMessage);
+                    return null;
                 }
             }
         }
+
+        public static void SelectGameDirectory()
+        {
+            string selectedPath = SelectDirectory("Select Game Directory", "Select Folder", "You did not choose a game directory!");
+
+            if (!string.IsNullOrWhiteSpace(selectedPath))
+            {
+                Properties.Settings.Default.GameDir = selectedPath;
+                CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, "Game path set to: " + selectedPath);
+            }
+        }
+
+        public static void SelectUserDataDirectory()
+        {
+            string selectedPath = SelectDirectory("Select User Data Directory", "Select Folder", "You did not choose your user data directory!");
+
+            if (!string.IsNullOrWhiteSpace(selectedPath))
+            {
+                Properties.Settings.Default.UserDataDir = selectedPath;
+                CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, "User Data path set to: " + selectedPath);
+            }
+        }
+
+
 
         public static void CopyDirectory(string sourceDir, string destinationDir, bool directoriesOnly)
         {

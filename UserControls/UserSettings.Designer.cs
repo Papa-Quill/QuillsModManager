@@ -33,6 +33,7 @@ namespace QMM
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserSettings));
             this.LabelRemember = new System.Windows.Forms.Label();
             this.PanelSEEBody = new Guna.UI2.WinForms.Guna2Panel();
+            this.BtnSelectUserDataDir = new Guna.UI2.WinForms.Guna2Button();
             this.BtnOpenSavesDir = new Guna.UI2.WinForms.Guna2Button();
             this.BtnOpenGameDir = new Guna.UI2.WinForms.Guna2Button();
             this.ComboBoxThemes = new Guna.UI2.WinForms.Guna2ComboBox();
@@ -60,7 +61,6 @@ namespace QMM
             this.ImgIcon = new System.Windows.Forms.PictureBox();
             this.LabelTitle = new System.Windows.Forms.Label();
             this.LabelVersion = new System.Windows.Forms.Label();
-            this.TxtModDescription = new Guna.UI2.WinForms.Guna2TextBox();
             this.PanelSEEBody.SuspendLayout();
             this.PanelSEEHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ImgIcon)).BeginInit();
@@ -89,7 +89,7 @@ namespace QMM
             this.PanelSEEBody.BorderColor = global::QMM.Properties.Settings.Default.DetailColor;
             this.PanelSEEBody.BorderRadius = global::QMM.Properties.Settings.Default.BorderRadius;
             this.PanelSEEBody.BorderThickness = 1;
-            this.PanelSEEBody.Controls.Add(this.TxtModDescription);
+            this.PanelSEEBody.Controls.Add(this.BtnSelectUserDataDir);
             this.PanelSEEBody.Controls.Add(this.BtnOpenSavesDir);
             this.PanelSEEBody.Controls.Add(this.BtnOpenGameDir);
             this.PanelSEEBody.Controls.Add(this.ComboBoxThemes);
@@ -119,6 +119,33 @@ namespace QMM
             this.PanelSEEBody.Name = "PanelSEEBody";
             this.PanelSEEBody.Size = new System.Drawing.Size(780, 287);
             this.PanelSEEBody.TabIndex = 19;
+            // 
+            // BtnSelectUserDataDir
+            // 
+            this.BtnSelectUserDataDir.AccessibleName = "BtnSelectUserDataDir";
+            this.BtnSelectUserDataDir.Animated = true;
+            this.BtnSelectUserDataDir.BackColor = System.Drawing.Color.Transparent;
+            this.BtnSelectUserDataDir.BorderColor = global::QMM.Properties.Settings.Default.DetailColor;
+            this.BtnSelectUserDataDir.BorderThickness = 1;
+            this.BtnSelectUserDataDir.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.BtnSelectUserDataDir.DataBindings.Add(new System.Windows.Forms.Binding("BorderColor", global::QMM.Properties.Settings.Default, "DetailColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.BtnSelectUserDataDir.DataBindings.Add(new System.Windows.Forms.Binding("FillColor", global::QMM.Properties.Settings.Default, "ButtonColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.BtnSelectUserDataDir.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::QMM.Properties.Settings.Default, "TextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.BtnSelectUserDataDir.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.BtnSelectUserDataDir.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.BtnSelectUserDataDir.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.BtnSelectUserDataDir.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.BtnSelectUserDataDir.FillColor = global::QMM.Properties.Settings.Default.ButtonColor;
+            this.BtnSelectUserDataDir.Font = new System.Drawing.Font("Gadugi", 10F);
+            this.BtnSelectUserDataDir.ForeColor = global::QMM.Properties.Settings.Default.TextColor;
+            this.BtnSelectUserDataDir.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(167)))), ((int)(((byte)(231)))));
+            this.BtnSelectUserDataDir.ImageSize = new System.Drawing.Size(16, 16);
+            this.BtnSelectUserDataDir.Location = new System.Drawing.Point(587, 231);
+            this.BtnSelectUserDataDir.Name = "BtnSelectUserDataDir";
+            this.BtnSelectUserDataDir.Size = new System.Drawing.Size(182, 45);
+            this.BtnSelectUserDataDir.TabIndex = 11;
+            this.BtnSelectUserDataDir.Text = "Select User Data Dir";
+            this.BtnSelectUserDataDir.Click += new System.EventHandler(this.BtnSelectUserDataDir_Click);
             // 
             // BtnOpenSavesDir
             // 
@@ -830,43 +857,6 @@ namespace QMM
             this.LabelVersion.Text = global::QMM.Properties.Settings.Default.Version;
             this.LabelVersion.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveWindow);
             // 
-            // TxtModDescription
-            // 
-            this.TxtModDescription.AccessibleName = "TxtModDescription";
-            this.TxtModDescription.Animated = true;
-            this.TxtModDescription.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
-            this.TxtModDescription.BackColor = System.Drawing.Color.Transparent;
-            this.TxtModDescription.BorderColor = global::QMM.Properties.Settings.Default.DetailColor;
-            this.TxtModDescription.Cursor = System.Windows.Forms.Cursors.Default;
-            this.TxtModDescription.DataBindings.Add(new System.Windows.Forms.Binding("BorderColor", global::QMM.Properties.Settings.Default, "DetailColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.TxtModDescription.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::QMM.Properties.Settings.Default, "TextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.TxtModDescription.DataBindings.Add(new System.Windows.Forms.Binding("PlaceholderForeColor", global::QMM.Properties.Settings.Default, "PlaceholderColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.TxtModDescription.DataBindings.Add(new System.Windows.Forms.Binding("FillColor", global::QMM.Properties.Settings.Default, "ButtonColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.TxtModDescription.DefaultText = "May require a restart!";
-            this.TxtModDescription.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
-            this.TxtModDescription.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.TxtModDescription.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.TxtModDescription.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.TxtModDescription.FillColor = global::QMM.Properties.Settings.Default.ButtonColor;
-            this.TxtModDescription.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(86)))));
-            this.TxtModDescription.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.TxtModDescription.ForeColor = global::QMM.Properties.Settings.Default.TextColor;
-            this.TxtModDescription.HideSelection = false;
-            this.TxtModDescription.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(86)))));
-            this.TxtModDescription.Location = new System.Drawing.Point(587, 234);
-            this.TxtModDescription.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.TxtModDescription.MaxLength = 255;
-            this.TxtModDescription.Multiline = true;
-            this.TxtModDescription.Name = "TxtModDescription";
-            this.TxtModDescription.PasswordChar = '\0';
-            this.TxtModDescription.PlaceholderForeColor = global::QMM.Properties.Settings.Default.PlaceholderColor;
-            this.TxtModDescription.PlaceholderText = "";
-            this.TxtModDescription.ReadOnly = true;
-            this.TxtModDescription.SelectedText = "";
-            this.TxtModDescription.Size = new System.Drawing.Size(182, 39);
-            this.TxtModDescription.TabIndex = 16;
-            this.TxtModDescription.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // UserSettings
             // 
             this.AccessibleName = "UserSettings";
@@ -926,6 +916,6 @@ namespace QMM
         private Guna.UI2.WinForms.Guna2Button BtnOpenAppDir;
         private Guna.UI2.WinForms.Guna2Button BtnOpenGameDir;
         private Guna.UI2.WinForms.Guna2Button BtnOpenSavesDir;
-        private Guna.UI2.WinForms.Guna2TextBox TxtModDescription;
+        private Guna.UI2.WinForms.Guna2Button BtnSelectUserDataDir;
     }
 }

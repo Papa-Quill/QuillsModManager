@@ -48,7 +48,7 @@ namespace QMM
                 BtnSetTertiary, BtnSetText, BtnToolTips, TxtColorInput,
                 TxtRoundAmount, TxtColorInput, ComboBoxThemes, BtnFormShadows,
                 BtnRoundButtons, BtnResetSettings, BtnOpenAppDir, BtnOpenGameDir,
-                BtnOpenSavesDir };
+                BtnOpenSavesDir, BtnSelectUserDataDir };
 
             CUpdateTheme.Refresh(this, controlsToModify);
         }
@@ -147,6 +147,8 @@ namespace QMM
             try
             {
                 Properties.Settings.Default.Save();
+                Settings settings = new Settings();
+                settings.SaveSettingsToJson();
                 CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, "Save Successful!");
             }
             catch (Exception ex)
@@ -265,7 +267,7 @@ namespace QMM
 
         private void BtnOpenSavesDir_Click(object sender, EventArgs e)
         {
-            foreach (string userID in Directory.GetDirectories("C:\\Program Files (x86)\\Steam\\userdata"))
+            foreach (string userID in Directory.GetDirectories(Properties.Settings.Default.UserDataDir))
             {
                 if (Directory.Exists(userID + "\\204360\\remote"))
                 {
@@ -279,6 +281,11 @@ namespace QMM
         private void BtnSelectGameDir_Click(object sender, EventArgs e)
         {
             CFileManager.SelectGameDirectory();
+        }
+
+        private void BtnSelectUserDataDir_Click(object sender, EventArgs e)
+        {
+            CFileManager.SelectUserDataDirectory();
         }
 
         private void BtnOpenAppDir_Click(object sender, EventArgs e)

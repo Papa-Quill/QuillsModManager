@@ -19,7 +19,7 @@ namespace QMM
         public string gameDir = Properties.Settings.Default.GameDir;
         public string backupFolder = AppDomain.CurrentDomain.BaseDirectory + "\\Backup";
         public string dataFolder = Properties.Settings.Default.GameDir + "\\data";
-        public string userDataFolder = "C:\\Program Files (x86)\\Steam\\userdata";
+        public string userDataFolder = Properties.Settings.Default.UserDataDir;
         public static bool RefreshQueued = false;
         private readonly Timer RefreshTimer;
 
@@ -596,7 +596,7 @@ namespace QMM
                             );
                     }
                 }
-                if (backedAtLeastOne) CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, $"Backed saves to: {AppDomain.CurrentDomain.BaseDirectory}\\saves");
+                if (backedAtLeastOne) CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, $"Backed saves to: {AppDomain.CurrentDomain.BaseDirectory}saves");
             }
             else CNotification.CreateNotif(Properties.Settings.Default.WarningColor, $"No Directory found at:{Environment.NewLine}{userDataFolder}");
         }
@@ -618,7 +618,7 @@ namespace QMM
                     if (Directory.Exists(userDataFolder + $"\\{userID}\\204360\\remote"))
                     {
                         File.Copy(file, userDataFolder + $"\\{userID}\\204360\\remote\\cc_save.dat", true);
-                        CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, "Save restored to backup!");
+                        CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, "Save restored from backup!");
                     }
                 }
             }

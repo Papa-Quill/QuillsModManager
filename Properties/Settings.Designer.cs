@@ -253,13 +253,25 @@ namespace QMM.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\Steam\\steamapps\\common\\CastleCrashers")]
         public string GameDir {
             get {
                 return ((string)(this["GameDir"]));
             }
             set {
                 this["GameDir"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\Steam\\userdata")]
+        public string UserDataDir {
+            get {
+                return ((string)(this["UserDataDir"]));
+            }
+            set {
+                this["UserDataDir"] = value;
             }
         }
     }

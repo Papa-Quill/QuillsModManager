@@ -94,6 +94,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserControls\CUserSettings.cs" />
     <Compile Include="UserControls\UserSettings.cs">
       <SubType>Form</SubType>
     </Compile>
