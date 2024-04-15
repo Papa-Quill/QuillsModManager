@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using QMM.Util;
 using System;
 using System.Drawing;
@@ -10,7 +9,7 @@ namespace QMM
 {
     public class Settings
     {
-        private string settingsFilePath = "settings.json";
+        private readonly string settingsFilePath = "settings.json";
 
         public Color ButtonColor { get; set; }
         public Color BGPrimary { get; set; }

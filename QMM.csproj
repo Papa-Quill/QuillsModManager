@@ -171,7 +171,6 @@
     <None Include="Resources\NoImage.png" />
     <None Include="Resources\AnimatedQuillDiamond.gif" />
     <None Include="Resources\QuillDiamondNew64.ico" />
-    <None Include="Resources\AppIcon.ico" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

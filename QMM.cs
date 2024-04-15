@@ -189,62 +189,91 @@ namespace QMM
             CFormUtil.CloseAllOpenModInfoForms();
             PanelModList.Controls.Clear();
             currentY = 10;
+
             if (File.Exists(CModListManager.ModListFilePath))
             {
-                string json = File.ReadAllText(CModListManager.ModListFilePath);
-                List<Mod> modList = JsonConvert.DeserializeObject<List<Mod>>(json);
+                List<Mod> modList = DeserializeModList();
+
                 foreach (Mod mod in modList)
                 {
-                    Guna2Button button = new Guna2Button();
-                    button.Name = "Btn" + mod.ModTitle.Replace(" .", "");
-                    button.Text = $"{mod.ModTitle} | v{mod.ModVersion}";
-                    button.Width = ButtonWidth;
-                    button.Height = ButtonHeight;
-                    button.Location = new Point(10, currentY);
-                    button.Animated = true;
-                    button.BorderColor = Properties.Settings.Default.DetailColor;
-                    button.BorderThickness = 1;
-                    button.CheckedState.CustomBorderColor = Color.White;
-                    button.CheckedState.Font = new Font("Gadugi", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-                    button.Cursor = Cursors.Hand;
-                    button.DataBindings.Add(new Binding("FillColor", Properties.Settings.Default, "ButtonColor", true, DataSourceUpdateMode.OnPropertyChanged));
-                    button.DataBindings.Add(new Binding("ForeColor", Properties.Settings.Default, "TextColor", true, DataSourceUpdateMode.OnPropertyChanged));
-                    button.Font = new Font("Gadugi", 10F);
-                    button.PressedColor = Color.FromArgb(30, 30, 36);
-                    button.HoverState.BorderColor = Properties.Settings.Default.DetailActive;
-                    button.CheckedState.BorderColor = Properties.Settings.Default.DetailActive;
-                    if (Properties.Settings.Default.RoundedControls)
-                    { button.BorderRadius = Properties.Settings.Default.BorderRadius; }
-                    else
-                    { button.BorderRadius = 0; }
-                    button.Click += Button_Click;
+                    ContextMenuStrip contextMenu = CreateModContextMenu(mod);
+                    Guna2Button button = CreateModButton(mod, contextMenu);
 
-                    CustomContextMenuStripRenderer customRenderer = new CustomContextMenuStripRenderer();
-
-                    ContextMenuStrip contextMenu = new ContextMenuStrip();
-                    ToolStripMenuItem moveUpMenuItem = new ToolStripMenuItem("Move Up");
-                    moveUpMenuItem.Click += (sender, e) => MoveModItem(mod.ModTitle, -1);
-                    contextMenu.Items.Add(moveUpMenuItem);
-                    ToolStripMenuItem moveDownMenuItem = new ToolStripMenuItem("Move Down");
-                    moveDownMenuItem.Click += (sender, e) => MoveModItem(mod.ModTitle, 1);
-                    contextMenu.Items.Add(moveDownMenuItem);
-
-                    ToolStripMenuItem deleteMenuItem = new ToolStripMenuItem("Delete");
-                    deleteMenuItem.Click += (sender, e) => DeleteModItem(mod.ModTitle, mod.ModVersion);
-                    contextMenu.Items.Add(deleteMenuItem);
-
-                    button.ContextMenuStrip = contextMenu;
-                    contextMenu.Renderer = customRenderer;
-                    contextMenu.ShowImageMargin = false;
-                    contextMenu.BackColor = Properties.Settings.Default.BGTertiary;
-                    contextMenu.ForeColor = Properties.Settings.Default.TextColor;
-
-                    currentY += ButtonHeight + VerticalSpacing;
                     PanelModList.Controls.Add(button);
                     AdjustButtonWidths();
                 }
             }
         }
+
+        private List<Mod> DeserializeModList()
+        {
+            string json = File.ReadAllText(CModListManager.ModListFilePath);
+            return JsonConvert.DeserializeObject<List<Mod>>(json);
+        }
+
+        private ContextMenuStrip CreateModContextMenu(Mod mod)
+        {
+            CustomContextMenuStripRenderer customRenderer = new CustomContextMenuStripRenderer();
+
+            ContextMenuStrip contextMenu = new ContextMenuStrip
+            {
+                Renderer = customRenderer,
+                ShowImageMargin = false,
+                BackColor = Properties.Settings.Default.BGTertiary,
+                ForeColor = Properties.Settings.Default.TextColor
+            };
+
+            ToolStripMenuItem moveUpMenuItem = new ToolStripMenuItem("Move Up");
+            moveUpMenuItem.Click += (sender, e) => MoveModItem(mod.ModTitle, -1);
+            ToolStripMenuItem moveDownMenuItem = new ToolStripMenuItem("Move Down");
+            moveDownMenuItem.Click += (sender, e) => MoveModItem(mod.ModTitle, 1);
+            ToolStripMenuItem deleteMenuItem = new ToolStripMenuItem("Delete");
+            deleteMenuItem.Click += (sender, e) => DeleteModItem(mod.ModTitle, mod.ModVersion);
+
+            contextMenu.Items.Add(moveUpMenuItem);
+            contextMenu.Items.Add(moveDownMenuItem);
+            contextMenu.Items.Add(deleteMenuItem);
+
+            return contextMenu;
+        }
+
+        private Guna2Button CreateModButton(Mod mod, ContextMenuStrip contextMenu)
+        {
+            Guna2Button button = new Guna2Button
+            {
+                Name = "Btn" + mod.ModTitle.Replace(" .", ""),
+                Text = $"{mod.ModTitle} | v{mod.ModVersion}",
+                Width = ButtonWidth,
+                Height = ButtonHeight,
+                Location = new Point(10, currentY),
+                Animated = true,
+                BorderColor = Properties.Settings.Default.DetailColor,
+                BorderThickness = 1,
+                Font = new Font("Gadugi", 10F),
+                PressedColor = Color.FromArgb(30, 30, 36),
+                Cursor = Cursors.Hand,
+                ContextMenuStrip = contextMenu
+            };
+
+            button.CheckedState.CustomBorderColor = Color.White;
+            button.CheckedState.Font = new Font("Gadugi", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button.DataBindings.Add(new Binding("FillColor", Properties.Settings.Default, "ButtonColor", true, DataSourceUpdateMode.OnPropertyChanged));
+            button.DataBindings.Add(new Binding("ForeColor", Properties.Settings.Default, "TextColor", true, DataSourceUpdateMode.OnPropertyChanged));
+            button.HoverState.BorderColor = Properties.Settings.Default.DetailActive;
+            button.CheckedState.BorderColor = Properties.Settings.Default.DetailActive;
+
+            if (Properties.Settings.Default.RoundedControls)
+            { button.BorderRadius = Properties.Settings.Default.BorderRadius; }
+            else
+            { button.BorderRadius = 0; }
+
+            button.Click += Button_Click;
+
+            currentY += ButtonHeight + VerticalSpacing;
+
+            return button;
+        }
+
 
         private void DeleteModItem(string modTitle, string modVersion)
         {
@@ -269,10 +298,8 @@ namespace QMM
             }
         }
 
-
         private void Button_Click(object sender, EventArgs e)
         {
-            // Normal click event
             CFormUtil.CloseAllOpenModInfoForms();
             Guna2Button clickedButton = (Guna2Button)sender;
             string buttonText = clickedButton.Text;
@@ -286,6 +313,7 @@ namespace QMM
                     FModInfo fModInfo = new FModInfo(this, clickedMod.ModTitle, clickedMod.ModAuthor, clickedMod.ModVersion, clickedMod.ModDescription, clickedMod.ModLocation);
                     fModInfo.Show();
                     fModInfo.SetLocationRelativeToForm1();
+                    Focus();
                 }
                 else
                 {
@@ -322,7 +350,6 @@ namespace QMM
             process.Dispose();
         }
 
-
         private void LabelMadeBy_Click(object sender, EventArgs e)
         {
             Process.Start("https://github.com/Papa-Quill/");
@@ -334,8 +361,7 @@ namespace QMM
             LabelProgress.Visible = true; ProgressBar.Visible = true;
             if (!Directory.Exists(destinationDir)) Directory.CreateDirectory(destinationDir);
             var dir = new DirectoryInfo(sourceDir);
-            if (!dir.Exists)
-                throw new DirectoryNotFoundException($"Source directory not found: {dir.FullName}");
+            if (!dir.Exists) throw new DirectoryNotFoundException($"Source directory not found: {dir.FullName}");
 
             if (!directoriesOnly)
             {
@@ -413,7 +439,6 @@ namespace QMM
 
             OpenFileOrFolder(gameExecutablePath);
         }
-
 
         private void BtnAddMod_Click(object sender, EventArgs e)
         {
@@ -520,9 +545,9 @@ namespace QMM
                 }
                 if (Directory.Exists(dataFolder))
                 {
-                    CNotification.CreateNotif(Color.White, "Backing up data folder: " + dataFolder);
                     ProgressBar.Maximum = DirectoryFileMeasurement(dataFolder, false);
-                    CopyDirectory(dataFolder, backupFolder, false, "Restoring Backup: ");
+                    CopyDirectory(dataFolder, backupFolder, false, "Creating Backup: ");
+                    CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, "Backup complete!");
                 }
                 else
                 {
@@ -556,19 +581,20 @@ namespace QMM
 
             try
             {
-                CNotification.CreateNotif(Color.White, gameDir);
                 if (Directory.Exists(dataFolder))
                 {
                     Directory.Delete(dataFolder, true);
                     Directory.CreateDirectory(dataFolder);
                     ProgressBar.Maximum = DirectoryFileMeasurement(backupFolder, false);
                     CopyDirectory(backupFolder, dataFolder, false, "Restoring Backup: ");
+                    CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, "Backup restored!");
                 }
                 else
                 {
                     Directory.CreateDirectory(dataFolder);
                     ProgressBar.Maximum = DirectoryFileMeasurement(backupFolder, false);
                     CopyDirectory(backupFolder, dataFolder, false, "Restoring Backup: ");
+                    CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, "Backup restored!");
                 }
             }
             catch (Exception ex)
@@ -596,7 +622,7 @@ namespace QMM
                             );
                     }
                 }
-                if (backedAtLeastOne) CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, $"Backed saves to: {AppDomain.CurrentDomain.BaseDirectory}saves");
+                if (backedAtLeastOne) CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, $"Backed save data to: {AppDomain.CurrentDomain.BaseDirectory}saves");
             }
             else CNotification.CreateNotif(Properties.Settings.Default.WarningColor, $"No Directory found at:{Environment.NewLine}{userDataFolder}");
         }
@@ -605,7 +631,7 @@ namespace QMM
         {
             if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "\\saves"))
             {
-                CNotification.CreateNotif(Properties.Settings.Default.WarningColor, "No save back ups found!");
+                CNotification.CreateNotif(Properties.Settings.Default.WarningColor, "No save backups found!");
                 return;
             }
             string a = AppDomain.CurrentDomain.BaseDirectory + "\\saves";
@@ -618,7 +644,7 @@ namespace QMM
                     if (Directory.Exists(userDataFolder + $"\\{userID}\\204360\\remote"))
                     {
                         File.Copy(file, userDataFolder + $"\\{userID}\\204360\\remote\\cc_save.dat", true);
-                        CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, "Save restored from backup!");
+                        CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, "Save data restored from backup!");
                     }
                 }
             }

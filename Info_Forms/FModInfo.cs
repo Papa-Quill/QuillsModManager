@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace QMM.Info_Forms
@@ -25,7 +26,6 @@ namespace QMM.Info_Forms
             var controlsToModify = new Control[] {
                 BtnLaunchMod, TxtModDescription, TxtModTitle };
             CUpdateTheme.Refresh(this, controlsToModify);
-            InitializeTimer();
             LoadModData();
         }
 
@@ -59,25 +59,14 @@ namespace QMM.Info_Forms
             else
             {
                 ImgIcon.Image = Properties.Resources.NoImage;
-                System.Windows.Forms.MessageBox.Show(modLocation);
             }
-        }
-
-        private void InitializeTimer()
-        {
-            Timer locationUpdateTimer = new Timer();
-            locationUpdateTimer.Interval = 1;
-            locationUpdateTimer.Tick += LocationUpdateTimer_Tick;
-            locationUpdateTimer.Start();
-        }
-
-        private void LocationUpdateTimer_Tick(object sender, EventArgs e)
-        {
-            SetLocationRelativeToForm1();
         }
 
         public void SetLocationRelativeToForm1()
         { Location = new Point(mainFormInstance.Location.X + 648, mainFormInstance.Location.Y); }
+
+        private void LocationUpdateTimer_Tick(object sender, EventArgs e)
+        { SetLocationRelativeToForm1(); }
         #endregion
 
         #region Button Functions
