@@ -39,7 +39,7 @@
       <Value Profile="(Default)">White</Value>
     </Setting>
     <Setting Name="Version" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1.0.2</Value>
+      <Value Profile="(Default)">v1.0.3</Value>
     </Setting>
     <Setting Name="HotKeyForm" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -48,10 +48,10 @@
       <Value Profile="(Default)">LabelMessage</Value>
     </Setting>
     <Setting Name="BorderRadius" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">8</Value>
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="RoundedControls" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="FormShadows" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

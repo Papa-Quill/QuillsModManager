@@ -54,13 +54,14 @@
             // 
             this.NotifBox.AccessibleName = "NotifBox";
             this.NotifBox.BorderColor = global::QMM.Properties.Settings.Default.DetailColor;
-            this.NotifBox.BorderRadius = 8;
+            this.NotifBox.BorderRadius = global::QMM.Properties.Settings.Default.BorderRadius;
             this.NotifBox.BorderThickness = 1;
             this.NotifBox.Controls.Add(this.LabelTitle);
             this.NotifBox.Controls.Add(this.TxtNotif);
             this.NotifBox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.NotifBox.DataBindings.Add(new System.Windows.Forms.Binding("BorderColor", global::QMM.Properties.Settings.Default, "DetailColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.NotifBox.DataBindings.Add(new System.Windows.Forms.Binding("FillColor", global::QMM.Properties.Settings.Default, "BGSecondary", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.NotifBox.DataBindings.Add(new System.Windows.Forms.Binding("BorderRadius", global::QMM.Properties.Settings.Default, "BorderRadius", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.NotifBox.FillColor = global::QMM.Properties.Settings.Default.BGSecondary;
             this.NotifBox.Location = new System.Drawing.Point(15, 10);
             this.NotifBox.Name = "NotifBox";

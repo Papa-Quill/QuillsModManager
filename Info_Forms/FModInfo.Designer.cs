@@ -58,9 +58,9 @@
             this.LabelModAuthor.BackColor = System.Drawing.Color.Transparent;
             this.LabelModAuthor.Cursor = System.Windows.Forms.Cursors.Default;
             this.LabelModAuthor.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::QMM.Properties.Settings.Default, "TextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.LabelModAuthor.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.LabelModAuthor.Font = new System.Drawing.Font("Gadugi", 10F);
             this.LabelModAuthor.ForeColor = global::QMM.Properties.Settings.Default.TextColor;
-            this.LabelModAuthor.Location = new System.Drawing.Point(6, 488);
+            this.LabelModAuthor.Location = new System.Drawing.Point(6, 499);
             this.LabelModAuthor.Name = "LabelModAuthor";
             this.LabelModAuthor.Size = new System.Drawing.Size(132, 21);
             this.LabelModAuthor.TabIndex = 13;
@@ -73,9 +73,9 @@
             this.LabelModVersion.BackColor = System.Drawing.Color.Transparent;
             this.LabelModVersion.Cursor = System.Windows.Forms.Cursors.Default;
             this.LabelModVersion.DataBindings.Add(new System.Windows.Forms.Binding("ForeColor", global::QMM.Properties.Settings.Default, "TextColor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.LabelModVersion.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.LabelModVersion.Font = new System.Drawing.Font("Gadugi", 10F);
             this.LabelModVersion.ForeColor = global::QMM.Properties.Settings.Default.TextColor;
-            this.LabelModVersion.Location = new System.Drawing.Point(137, 488);
+            this.LabelModVersion.Location = new System.Drawing.Point(137, 499);
             this.LabelModVersion.Name = "LabelModVersion";
             this.LabelModVersion.Size = new System.Drawing.Size(58, 21);
             this.LabelModVersion.TabIndex = 13;
@@ -102,7 +102,7 @@
             this.BtnLaunchMod.ForeColor = global::QMM.Properties.Settings.Default.TextColor;
             this.BtnLaunchMod.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(167)))), ((int)(((byte)(231)))));
             this.BtnLaunchMod.ImageSize = new System.Drawing.Size(16, 16);
-            this.BtnLaunchMod.Location = new System.Drawing.Point(10, 431);
+            this.BtnLaunchMod.Location = new System.Drawing.Point(10, 453);
             this.BtnLaunchMod.Name = "BtnLaunchMod";
             this.BtnLaunchMod.Size = new System.Drawing.Size(180, 45);
             this.BtnLaunchMod.TabIndex = 14;
@@ -143,7 +143,7 @@
             this.TxtModDescription.PlaceholderText = "TxtModDescription";
             this.TxtModDescription.ReadOnly = true;
             this.TxtModDescription.SelectedText = "";
-            this.TxtModDescription.Size = new System.Drawing.Size(180, 156);
+            this.TxtModDescription.Size = new System.Drawing.Size(180, 180);
             this.TxtModDescription.TabIndex = 15;
             this.TxtModDescription.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 

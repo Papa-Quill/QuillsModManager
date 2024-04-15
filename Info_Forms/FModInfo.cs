@@ -51,7 +51,7 @@ namespace QMM.Info_Forms
             TxtModTitle.Text = modTitle;
             TxtModDescription.Text = modDescription;
             LabelModAuthor.Text = modAuthor;
-            LabelModVersion.Text = modVersion;
+            LabelModVersion.Text = "v" + modVersion;
             if (File.Exists(modLocation + "\\modicon.png"))
             {
                 ImgIcon.Image = Image.FromFile(modLocation + "\\modicon.png");

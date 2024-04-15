@@ -312,10 +312,10 @@ namespace QMM
                     SetThemeSettings("#16141C", "#1A1926", "#292246", "#C4B7FF", "#8D50EB", "#16141C", "#F5F4F2", "#C4B7FF");
                     break;
                 case 5: // Rosé Pine
-                    SetThemeSettings("#191724", "#1f1d2e", "#26233a", "#c4a7e7", "#9ccfd8", "#191724", "#e0def4", "#6e6a86");
+                    SetThemeSettings("#191724", "#1f1d2e", "#26233a", "#c4a7e7", "#eb6f92", "#191724", "#e0def4", "#6e6a86");
                     break;
                 case 6: // Rosé Pine Moon
-                    SetThemeSettings("#232136", "#2a273f", "#393552", "#c4a7e7", "#9ccfd8", "#232136", "#e0def4", "#6e6a86");
+                    SetThemeSettings("#232136", "#2a273f", "#393552", "#c4a7e7", "#eb6f92", "#232136", "#e0def4", "#6e6a86");
                     break;
                 default:
                     break;

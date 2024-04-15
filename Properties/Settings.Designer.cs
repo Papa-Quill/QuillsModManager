@@ -169,7 +169,7 @@ namespace QMM.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.0.2")]
+        [global::System.Configuration.DefaultSettingValueAttribute("v1.0.3")]
         public string Version {
             get {
                 return ((string)(this["Version"]));
@@ -205,7 +205,7 @@ namespace QMM.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int BorderRadius {
             get {
                 return ((int)(this["BorderRadius"]));
@@ -217,7 +217,7 @@ namespace QMM.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool RoundedControls {
             get {
                 return ((bool)(this["RoundedControls"]));

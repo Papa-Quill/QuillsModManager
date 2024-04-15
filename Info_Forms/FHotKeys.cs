@@ -43,7 +43,8 @@ namespace QMM.Util
                 CloseTimer.Start();
             }
 
-            CFormUtil.ApplyRoundedForm(this, Properties.Settings.Default.BorderRadius);
+            if (Properties.Settings.Default.BorderRadius != 0)
+                CFormUtil.ApplyRoundedForm(this, Properties.Settings.Default.BorderRadius);
         }
 
         #region Hotkeys
