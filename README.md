@@ -1,7 +1,9 @@
 # Quill's Mod Manager
 
-A beautiful mod manager made for Castle Crashers written in C#.
-Video overview of how to use this application: https://www.youtube.com/watch?v=pJVs9cZOmRU
+- A beautiful mod manager made for Castle Crashers written in C#.
+- GET PREMADE MOD FOLDERS HERE!!! - https://github.com/Papa-Quill/QMM-Mod-Repo
+- Video overview of how to use this application: https://www.youtube.com/watch?v=pJVs9cZOmRU
+- Make sure to install the Azonix font: https://www.dafont.com/azonix.font
 
 ## Authors
 
@@ -14,3 +16,7 @@ Video overview of how to use this application: https://www.youtube.com/watch?v=p
 - Backup and restore game files and save data
 - Hotkey system for efficient user interactions
 - Highly customizable user settings
+
+## Preview
+
+![Application Preview](https://cdn.discordapp.com/attachments/883181891744858152/1228746548670627990/image.png?ex=662d2a66&is=661ab566&hm=889c062ab8c3f4dc244c96bdc744a56e7595843fa0dcaa52136615d6657d5a1a&)
