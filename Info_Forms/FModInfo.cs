@@ -27,6 +27,7 @@ namespace QMM.Info_Forms
                 BtnLaunchMod, TxtModDescription, TxtModTitle };
             CUpdateTheme.Refresh(this, controlsToModify);
             LoadModData();
+            InitializeTimer();
         }
 
         #region Form base
@@ -60,6 +61,13 @@ namespace QMM.Info_Forms
             {
                 ImgIcon.Image = Properties.Resources.NoImage;
             }
+        }
+        private void InitializeTimer()
+        {
+            Timer locationUpdateTimer = new Timer();
+            locationUpdateTimer.Interval = 1;
+            locationUpdateTimer.Tick += LocationUpdateTimer_Tick;
+            locationUpdateTimer.Start();
         }
 
         public void SetLocationRelativeToForm1()
