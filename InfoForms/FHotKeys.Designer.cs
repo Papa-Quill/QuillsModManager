@@ -119,6 +119,7 @@
             this.ClientSize = new System.Drawing.Size(245, 187);
             this.Controls.Add(this.PanelNotifColor);
             this.Controls.Add(this.NotifBox);
+            this.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DataBindings.Add(new System.Windows.Forms.Binding("BackColor", global::QMM.Properties.Settings.Default, "BGPrimary", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

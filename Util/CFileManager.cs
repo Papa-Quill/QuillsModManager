@@ -49,8 +49,6 @@ namespace QMM.Util
             }
         }
 
-
-
         public static void CopyDirectory(string sourceDir, string destinationDir, bool directoriesOnly)
         {
             if (!Directory.Exists(destinationDir))

@@ -107,7 +107,7 @@
             this.BtnLaunchMod.Size = new System.Drawing.Size(180, 45);
             this.BtnLaunchMod.TabIndex = 14;
             this.BtnLaunchMod.Text = "Install Mod!";
-            this.BtnLaunchMod.Click += new System.EventHandler(this.BtnLaunchMod_Click);
+            this.BtnLaunchMod.Click += new System.EventHandler(this.BtnInstallMod_Click);
             // 
             // TxtModDescription
             // 

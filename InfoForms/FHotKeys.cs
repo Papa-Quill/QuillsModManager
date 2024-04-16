@@ -8,14 +8,33 @@ namespace QMM.Util
     public partial class FHotKeys : Form
     {
         #region Variables
-        readonly Timer CloseTimer = new Timer();
-        readonly Timer T1 = new Timer();
+        private readonly Timer closeTimer = new Timer();
+        private readonly Timer fadeTimer = new Timer();
         #endregion
 
         public FHotKeys()
         {
             InitializeComponent();
+            InitializeHotKeyForm();
+            InitializeTimers();
+        }
 
+        #region Hotkeys
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape || (keyData == (Keys.Control | Keys.W)))
+            {
+                Close();
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+        #endregion
+
+        #region Functions
+        private void InitializeHotKeyForm()
+        {
             var settingsMapping = new Dictionary<string, (int interval, int width, int height, string title, string notification)>
             {
                 ["Simple"] = (4000, 232, 102, "Hotkeys - Simple", "Escape = Close Window\r\nCtrl + W = Close Window"),
@@ -29,7 +48,7 @@ namespace QMM.Util
             {
                 (int interval, int width, int height, string title, string notification) = settings;
 
-                CloseTimer.Interval = interval;
+                closeTimer.Interval = interval;
                 Width = width;
                 Height = height;
                 LabelTitle.Text = title;
@@ -39,55 +58,55 @@ namespace QMM.Util
                 NotifBox.Height = Height - 20;
                 Location = new Point(0, Screen.PrimaryScreen.Bounds.Height / 2 - Height / 2);
 
-                CloseTimer.Tick += new EventHandler(FadeOut);
-                CloseTimer.Start();
+                closeTimer.Tick += CloseTimer_Tick;
+                closeTimer.Start();
             }
 
             if (Properties.Settings.Default.BorderRadius != 0)
                 CFormUtil.ApplyRoundedForm(this, Properties.Settings.Default.BorderRadius);
         }
 
-        #region Hotkeys
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        private void InitializeTimers()
         {
-            if (keyData == (Keys.Escape))
-            {
-                Close();
-                return true;
-            }
-            else if (keyData == (Keys.Control | Keys.W))
-            {
-                Close();
-                return true;
-            }
-
-            return base.ProcessCmdKey(ref msg, keyData);
+            fadeTimer.Interval = 50;
+            fadeTimer.Tick += FadeTimer_Tick;
         }
-        #endregion
 
-        #region Functions
-        void FadeOut(object sender, EventArgs e)
+        private void FadeTimer_Tick(object sender, EventArgs e)
         {
-            CloseTimer.Interval = 50;
+            closeTimer.Interval = 50;
             if (Opacity <= 0)
             {
-                T1.Stop();
+                fadeTimer.Stop();
                 Close();
             }
             else
                 Opacity -= 0.3;
         }
+
+        private void CloseTimer_Tick(object sender, EventArgs e)
+        {
+            closeTimer.Interval = 50;
+            fadeTimer.Start();
+        }
         #endregion
 
-        #region Form interactions
+        #region Form Interactions
         private void NotifBox_Click(object sender, EventArgs e)
-        { Close(); }
+        {
+            Close();
+        }
 
         private void NotifBox_MouseHover(object sender, EventArgs e)
-        { CloseTimer.Enabled = false; Opacity = 1; }
+        {
+            closeTimer.Enabled = false;
+            Opacity = 1;
+        }
 
         private void NotifBox_MouseLeave(object sender, EventArgs e)
-        { CloseTimer.Enabled = true; }
+        {
+            closeTimer.Enabled = true;
+        }
         #endregion
     }
 }

@@ -2,7 +2,6 @@
 using System;
 using System.Drawing;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace QMM.Info_Forms
@@ -13,7 +12,7 @@ namespace QMM.Info_Forms
         private readonly MainForm mainFormInstance;
         private string modTitle, modAuthor, modVersion, modDescription, modLocation;
         #endregion
-
+        
         public FModInfo(MainForm mainFormInstance, string modTitle, string modAuthor, string modVersion, string modDescription, string modLocation)
         {
             InitializeComponent();
@@ -23,14 +22,13 @@ namespace QMM.Info_Forms
             this.modVersion = modVersion;
             this.modDescription = modDescription;
             this.modLocation = modLocation;
-            var controlsToModify = new Control[] {
-                BtnLaunchMod, TxtModDescription, TxtModTitle };
+            var controlsToModify = new Control[] { BtnLaunchMod, TxtModDescription, TxtModTitle };
             CUpdateTheme.Refresh(this, controlsToModify);
             LoadModData();
             InitializeTimer();
         }
 
-        #region Form base
+        #region Form Base
         protected override CreateParams CreateParams
         {
             get
@@ -53,42 +51,38 @@ namespace QMM.Info_Forms
             TxtModDescription.Text = modDescription;
             LabelModAuthor.Text = modAuthor;
             LabelModVersion.Text = "v" + modVersion;
-            if (File.Exists(modLocation + "\\modicon.png"))
-            {
-                ImgIcon.Image = Image.FromFile(modLocation + "\\modicon.png");
-            }
-            else
-            {
-                ImgIcon.Image = Properties.Resources.NoImage;
-            }
+            string modIconPath = Path.Combine(modLocation, "modicon.png");
+            ImgIcon.Image = File.Exists(modIconPath) ? Image.FromFile(modIconPath) : Properties.Resources.NoImage;
         }
+
         private void InitializeTimer()
         {
             Timer locationUpdateTimer = new Timer();
-            locationUpdateTimer.Interval = 1;
+            locationUpdateTimer.Interval = 10;
             locationUpdateTimer.Tick += LocationUpdateTimer_Tick;
             locationUpdateTimer.Start();
         }
 
         public void SetLocationRelativeToForm1()
-        { Location = new Point(mainFormInstance.Location.X + 648, mainFormInstance.Location.Y); }
+        {
+            Location = new Point(mainFormInstance.Location.X + 648, mainFormInstance.Location.Y);
+        }
 
         private void LocationUpdateTimer_Tick(object sender, EventArgs e)
-        { SetLocationRelativeToForm1(); }
+        {
+            SetLocationRelativeToForm1();
+        }
         #endregion
 
         #region Button Functions
-        private void BtnLaunchMod_Click(object sender, EventArgs e)
+        private void BtnInstallMod_Click(object sender, EventArgs e)
         {
             if (Directory.Exists(modLocation))
             {
-                string gameDir = Properties.Settings.Default.GameDir;
-
                 if (Directory.Exists(modLocation))
                 {
                     string sourceDir = Path.Combine(modLocation, "data");
-                    string destinationDir = Path.Combine(gameDir, "data");
-
+                    string destinationDir = Path.Combine(mainFormInstance.gameDir, "data");
                     try
                     {
                         CFileManager.CopyDirectory(sourceDir, destinationDir, false);

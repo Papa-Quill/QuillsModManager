@@ -56,34 +56,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Info_Forms\FHotKeys.cs">
+    <Compile Include="InfoForms\FHotKeys.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Info_Forms\FHotKeys.Designer.cs">
+    <Compile Include="InfoForms\FHotKeys.Designer.cs">
       <DependentUpon>FHotKeys.cs</DependentUpon>
     </Compile>
-    <Compile Include="Info_Forms\FMessageBox.cs">
+    <Compile Include="InfoForms\FMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Info_Forms\FMessageBox.Designer.cs">
+    <Compile Include="InfoForms\FMessageBox.Designer.cs">
       <DependentUpon>FMessageBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Info_Forms\FModInfo.cs">
+    <Compile Include="InfoForms\FModInfo.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Info_Forms\FModInfo.Designer.cs">
+    <Compile Include="InfoForms\FModInfo.Designer.cs">
       <DependentUpon>FModInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="Info_Forms\FNotification.cs">
+    <Compile Include="InfoForms\FNotification.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Info_Forms\FNotification.Designer.cs">
+    <Compile Include="InfoForms\FNotification.Designer.cs">
       <DependentUpon>FNotification.cs</DependentUpon>
     </Compile>
-    <Compile Include="Info_Forms\MainInfoForm.cs">
+    <Compile Include="InfoForms\MainInfoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Info_Forms\MainInfoForm.Designer.cs">
+    <Compile Include="InfoForms\MainInfoForm.Designer.cs">
       <DependentUpon>MainInfoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="QMM.cs">
@@ -119,19 +119,19 @@
     <Compile Include="Util\OToolTip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <EmbeddedResource Include="Info_Forms\FHotKeys.resx">
+    <EmbeddedResource Include="InfoForms\FHotKeys.resx">
       <DependentUpon>FHotKeys.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Info_Forms\FMessageBox.resx">
+    <EmbeddedResource Include="InfoForms\FMessageBox.resx">
       <DependentUpon>FMessageBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Info_Forms\FModInfo.resx">
+    <EmbeddedResource Include="InfoForms\FModInfo.resx">
       <DependentUpon>FModInfo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Info_Forms\FNotification.resx">
+    <EmbeddedResource Include="InfoForms\FNotification.resx">
       <DependentUpon>FNotification.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Info_Forms\MainInfoForm.resx">
+    <EmbeddedResource Include="InfoForms\MainInfoForm.resx">
       <DependentUpon>MainInfoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="QMM.resx">

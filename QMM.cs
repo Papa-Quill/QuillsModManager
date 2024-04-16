@@ -141,8 +141,11 @@ namespace QMM
         static int DirectoryFileMeasurement(string dir, bool directoriesOnly)
         {
             int count = 0;
-            if (!directoriesOnly) count += Directory.GetFiles(dir).Length;
-            foreach (string subDir in Directory.GetDirectories(dir))
+            if (!directoriesOnly)
+            {
+                count += Directory.EnumerateFiles(dir).Count();
+            }
+            foreach (string subDir in Directory.EnumerateDirectories(dir))
             {
                 count += DirectoryFileMeasurement(subDir, false);
             }
@@ -184,7 +187,7 @@ namespace QMM
             }
         }
 
-        public void CreateButtonsFromModTitles()
+        private void CreateButtonsFromModTitles()
         {
             CFormUtil.CloseAllOpenModInfoForms();
             PanelModList.Controls.Clear();
@@ -274,13 +277,11 @@ namespace QMM
             return button;
         }
 
-
         private void DeleteModItem(string modTitle, string modVersion)
         {
             CModListManager.RemoveMod(modTitle, modVersion);
             CreateButtonsFromModTitles();
         }
-
 
         private void MoveModItem(string modTitle, int direction)
         {
@@ -334,20 +335,24 @@ namespace QMM
             return clickedMod;
         }
 
-        void OpenFileOrFolder(string path)
+        private void OpenFileOrFolder(string path)
         {
-            var process = new Process();
-            try
+            using (var process = new Process())
             {
-                process.StartInfo = new ProcessStartInfo()
+                try
                 {
-                    UseShellExecute = true,
-                    FileName = path
-                };
-                process.Start();
+                    process.StartInfo = new ProcessStartInfo
+                    {
+                        UseShellExecute = true,
+                        FileName = path
+                    };
+                    process.Start();
+                }
+                catch (Exception ex)
+                {
+                    CNotification.CreateNotif(Properties.Settings.Default.WarningColor, $"Error: {ex.Message}");
+                }
             }
-            catch { }
-            process.Dispose();
         }
 
         private void LabelMadeBy_Click(object sender, EventArgs e)
@@ -355,43 +360,76 @@ namespace QMM
             Process.Start("https://github.com/Papa-Quill/");
         }
 
-        void CopyDirectory(string sourceDir, string destinationDir, bool directoriesOnly, string ProgressMessage)
+        private void CopyDirectory(string sourceDir, string destinationDir, bool directoriesOnly, string progressMessage)
         {
             ProgressBar.Value = 0;
-            LabelProgress.Visible = true; ProgressBar.Visible = true;
-            if (!Directory.Exists(destinationDir)) Directory.CreateDirectory(destinationDir);
-            var dir = new DirectoryInfo(sourceDir);
-            if (!dir.Exists) throw new DirectoryNotFoundException($"Source directory not found: {dir.FullName}");
+            LabelProgress.Visible = true;
+            ProgressBar.Visible = true;
 
-            if (!directoriesOnly)
+            if (!Directory.Exists(destinationDir))
+                Directory.CreateDirectory(destinationDir);
+
+            var sourceDirectoryInfo = new DirectoryInfo(sourceDir);
+            if (!sourceDirectoryInfo.Exists)
+                throw new DirectoryNotFoundException($"Source directory not found: {sourceDirectoryInfo.FullName}");
+
+            try
             {
-                foreach (string file in Directory.GetFiles(sourceDir))
+                if (!directoriesOnly)
                 {
-                    string targetFilePath = Path.Combine(destinationDir, Path.GetFileName(file));
-                    LabelProgress.Text = $"{ProgressMessage}{Path.GetFileName(file)}";
-                    File.Copy(file, targetFilePath, true);
-                    ProgressBar.Value++;
-                    LabelProgress.Refresh();
+                    foreach (string file in Directory.GetFiles(sourceDir))
+                    {
+                        string targetFilePath = Path.Combine(destinationDir, Path.GetFileName(file));
+                        UpdateProgressLabel(progressMessage, Path.GetFileName(file));
+                        File.Copy(file, targetFilePath, true);
+                        ProgressBar.Value++;
+                    }
+                    HideProgressControls();
                 }
-                LabelProgress.Visible = false; ProgressBar.Visible = false;
-            }
 
-            DirectoryInfo[] dirs = dir.GetDirectories();
-            foreach (DirectoryInfo subDir in dirs)
-            {
-                string newDestinationDir = Path.Combine(destinationDir, subDir.Name);
-                CopyDirectory(subDir.FullName, newDestinationDir, false, ProgressMessage);
+                foreach (DirectoryInfo subDir in sourceDirectoryInfo.GetDirectories())
+                {
+                    string newDestinationDir = Path.Combine(destinationDir, subDir.Name);
+                    CopyDirectory(subDir.FullName, newDestinationDir, false, progressMessage);
+                }
             }
+            catch (Exception ex)
+            {
+                CNotification.CreateNotif(Properties.Settings.Default.WarningColor, $"Error: {ex.Message}");
+                HideProgressControls();
+            }
+        }
+
+        void UpdateProgressLabel(string progressMessage, string fileName)
+        {
+            LabelProgress.Text = $"{progressMessage}{fileName}";
+            LabelProgress.Refresh();
+        }
+
+        void HideProgressControls()
+        {
+            LabelProgress.Visible = false;
+            ProgressBar.Visible = false;
         }
 
         private void CheckGameDir()
         {
-            if (!Directory.Exists(Properties.Settings.Default.GameDir))
+            if (!Directory.Exists(gameDir) || !File.Exists(Path.Combine(gameDir, "castle.exe")))
             {
                 CNotification.CreateNotif(Color.White, "Please select your game directory!");
                 CFileManager.SelectGameDirectory();
                 gameDir = Properties.Settings.Default.GameDir;
-                dataFolder = Properties.Settings.Default.GameDir + "\\data";
+                dataFolder = Path.Combine(gameDir, "data");
+            }
+        }
+
+        private void CheckUserDataDir()
+        {
+            if (!Directory.Exists(userDataFolder))
+            {
+                CNotification.CreateNotif(Color.White, "Please select your user data directory!");
+                CFileManager.SelectUserDataDirectory();
+                userDataFolder = Properties.Settings.Default.UserDataDir;
             }
         }
         #endregion
@@ -530,8 +568,12 @@ namespace QMM
         {
             ProgressBar.Value = 0;
             CheckGameDir();
-            if (!Directory.Exists(gameDir))
+            if (!Directory.Exists(gameDir) || !File.Exists(Path.Combine(gameDir, "castle.exe")))
+            {
+                CNotification.CreateNotif(Properties.Settings.Default.WarningColor, "Please select a valid game directory!");
                 return;
+            }
+
             string backupMessage = "Are you sure you want to create a backup?\nThis may take a while!";
             DialogResult dialogResult = CMessageBox.Show("Create Backup", backupMessage, true);
             if (dialogResult != DialogResult.Yes)
@@ -539,10 +581,11 @@ namespace QMM
 
             try
             {
-                if (!Directory.Exists(backupFolder))
-                {
-                    Directory.CreateDirectory(backupFolder);
-                }
+                if (Directory.Exists(backupFolder))
+                    Directory.Delete(backupFolder, true); // Delete the existing backup folder and its contents
+
+                Directory.CreateDirectory(backupFolder); // Create a new backup folder
+
                 if (Directory.Exists(dataFolder))
                 {
                     ProgressBar.Maximum = DirectoryFileMeasurement(dataFolder, false);
@@ -559,7 +602,7 @@ namespace QMM
                 CNotification.CreateNotif(Properties.Settings.Default.WarningColor, $"An error occurred while creating the backup: {ex.Message}");
             }
         }
-
+        
         private void BtnCloseInfo_Click(object sender, EventArgs e)
         { CFormUtil.CloseAllOpenModInfoForms(); }
 
@@ -569,11 +612,13 @@ namespace QMM
             CheckGameDir();
             if (!Directory.Exists(gameDir))
                 return;
+
             if (!Directory.Exists(backupFolder))
             {
                 CNotification.CreateNotif(Properties.Settings.Default.WarningColor, "Could not locate a backup!");
                 return;
             }
+
             string backupMessage = "Are you sure you want to restore your backup?\nThis may take a while!";
             DialogResult dialogResult = CMessageBox.Show("Restore Backup", backupMessage, true);
             if (dialogResult != DialogResult.Yes)
@@ -581,21 +626,12 @@ namespace QMM
 
             try
             {
-                if (Directory.Exists(dataFolder))
-                {
-                    Directory.Delete(dataFolder, true);
+                if (!Directory.Exists(dataFolder))
                     Directory.CreateDirectory(dataFolder);
-                    ProgressBar.Maximum = DirectoryFileMeasurement(backupFolder, false);
-                    CopyDirectory(backupFolder, dataFolder, false, "Restoring Backup: ");
-                    CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, "Backup restored!");
-                }
-                else
-                {
-                    Directory.CreateDirectory(dataFolder);
-                    ProgressBar.Maximum = DirectoryFileMeasurement(backupFolder, false);
-                    CopyDirectory(backupFolder, dataFolder, false, "Restoring Backup: ");
-                    CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, "Backup restored!");
-                }
+
+                ProgressBar.Maximum = DirectoryFileMeasurement(backupFolder, false);
+                CopyDirectory(backupFolder, dataFolder, false, "Restoring Backup: ");
+                CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, "Backup restored!");
             }
             catch (Exception ex)
             {
@@ -605,47 +641,70 @@ namespace QMM
 
         private void BtnBackupSave_Click(object sender, EventArgs e)
         {
-            if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "//saves"))
-                Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "//saves");
+            CheckUserDataDir();
+
+            string savesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "saves");
+            if (!Directory.Exists(savesDirectory))
+                Directory.CreateDirectory(savesDirectory);
+
             if (Directory.Exists(userDataFolder))
             {
                 bool backedAtLeastOne = false;
-                foreach (string userID in Directory.GetDirectories(userDataFolder))
+                foreach (string userIDDirectory in Directory.GetDirectories(userDataFolder))
                 {
-                    if (File.Exists(userID + "\\204360\\remote\\cc_save.dat"))
+                    string ccSavePath = Path.Combine(userIDDirectory, "204360", "remote", "cc_save.dat");
+                    if (File.Exists(ccSavePath))
                     {
                         backedAtLeastOne = true;
-                        File.Copy
-                            (
-                            userID + "\\204360\\remote\\cc_save.dat",
-                            AppDomain.CurrentDomain.BaseDirectory + $"\\saves\\cc_save.{Path.GetFileName(userID)}.dat", true
-                            );
+                        string ccSaveBackupPath = Path.Combine(savesDirectory, $"cc_save.{Path.GetFileName(userIDDirectory)}.dat");
+                        File.Copy(ccSavePath, ccSaveBackupPath, true);
+                    }
+                    else
+                    {
+                        CNotification.CreateNotif(Properties.Settings.Default.WarningColor, "Could not locate cc_save.dat in user data!");
                     }
                 }
-                if (backedAtLeastOne) CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, $"Backed save data to: {AppDomain.CurrentDomain.BaseDirectory}saves");
+                if (backedAtLeastOne)
+                    CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, $"Backed save data to: {savesDirectory}");
             }
-            else CNotification.CreateNotif(Properties.Settings.Default.WarningColor, $"No Directory found at:{Environment.NewLine}{userDataFolder}");
+            else
+            {
+                CNotification.CreateNotif(Properties.Settings.Default.WarningColor, $"No Directory found at:{Environment.NewLine}{userDataFolder}");
+            }
         }
 
         private void BtnRestoreSave_Click(object sender, EventArgs e)
         {
-            if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "\\saves"))
+            CheckUserDataDir();
+
+            string savesDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "saves");
+            if (!Directory.Exists(savesDirectory))
             {
                 CNotification.CreateNotif(Properties.Settings.Default.WarningColor, "No save backups found!");
                 return;
             }
-            string a = AppDomain.CurrentDomain.BaseDirectory + "\\saves";
-            foreach (string file in Directory.GetFiles(a))
+
+            foreach (string backupFile in Directory.GetFiles(savesDirectory))
             {
-                string fileName = Path.GetFileName(file);
+                string fileName = Path.GetFileName(backupFile);
                 if (fileName.StartsWith("cc_save.") && fileName.EndsWith(".dat"))
                 {
                     string userID = fileName.Substring(8, fileName.Length - 12);
-                    if (Directory.Exists(userDataFolder + $"\\{userID}\\204360\\remote"))
+                    string userSaveDirectory = Path.Combine(userDataFolder, userID, "204360", "remote");
+                    if (Directory.Exists(userSaveDirectory))
                     {
-                        File.Copy(file, userDataFolder + $"\\{userID}\\204360\\remote\\cc_save.dat", true);
+                        string userSavePath = Path.Combine(userSaveDirectory, "cc_save.dat");
+                        File.Copy(backupFile, userSavePath, true);
                         CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, "Save data restored from backup!");
                     }
+                    else
+                    {
+                        CNotification.CreateNotif(Properties.Settings.Default.WarningColor, "Could not locate cc_save.dat in user data!");
+                    }
+                }
+                else
+                {
+                    CNotification.CreateNotif(Properties.Settings.Default.WarningColor, "Backup save file could not be identified!");
                 }
             }
         }
