@@ -45,20 +45,15 @@ namespace QMM.Info_Forms
         {
             get
             {
-                CreateParams ShadowParams = base.CreateParams;
+                CreateParams shadowParams = base.CreateParams;
                 if (Properties.Settings.Default.FormShadows)
-                {
-                    ShadowParams.ExStyle |= 0x02000000;
-                    ShadowParams.ClassStyle |= 0x00020000;
-                }
-                return ShadowParams;
+                    shadowParams.ClassStyle |= 0x00020000;
+                return shadowParams;
             }
         }
 
         private void MoveWindow(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left) { CFormUtil.GrabWindow(this.Handle); }
-        }
+        { if (e.Button == MouseButtons.Left) CFormUtil.GrabWindow(Handle); }
         #endregion
 
         #region Hotkeys

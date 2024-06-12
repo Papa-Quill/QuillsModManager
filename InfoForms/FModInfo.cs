@@ -33,13 +33,10 @@ namespace QMM.Info_Forms
         {
             get
             {
-                CreateParams ShadowParams = base.CreateParams;
+                CreateParams shadowParams = base.CreateParams;
                 if (Properties.Settings.Default.FormShadows)
-                {
-                    ShadowParams.ExStyle |= 0x02000000;
-                    ShadowParams.ClassStyle |= 0x00020000;
-                }
-                return ShadowParams;
+                    shadowParams.ClassStyle |= 0x00020000;
+                return shadowParams;
             }
         }
         #endregion

@@ -155,7 +155,7 @@
             this.LabelInfo.Size = new System.Drawing.Size(334, 95);
             this.LabelInfo.TabIndex = 16;
             this.LabelInfo.Text = "QMM (Quill\'s Mod Manager) is a tool made for\r\nCastle Crashers modding. It targets" +
-    " file mods.\r\nv1.0.0 was created on April 4/12/2024.\r\n\r\nCreated by Papa Quill";
+    " file mods.\r\nv1.0.0 was created on April 12th 2024.\r\n\r\nCreated by Papa Quill";
             this.LabelInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // PanelHeader

@@ -121,7 +121,7 @@
   <data name="BtnOpenRepo.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wAAADsABataJCQAAOOFJREFUeF7t3QeYbVVh9vEISFFBKaIYiWDHjn4xQiyJBXsl9kasCHYFNSiKBSQq
+        vwAADr8BOAVTJAAAOOFJREFUeF7t3QeYbVVh9vEISFFBKaIYiWDHjn4xQiyJBXsl9kasCHYFNSiKBSQq
         EpFY0GgsRLFEY4lITBSjxoIVsRJFUSNNinSB733vXMYzZ947c2Zml7XX/v+f5/c8w0qEe/baZ6995+yz
         959cccUVAABgZOIgAACoWxwEAAB1i4MAAKBucRAAANQtDgIAgLrFQQBF21p2kTvKXWUPebA8Up4oe8tz
         5SVykBwqb5K3y3vkQ/IJOW49/+wx/9/8/+P/X/9v/L/1v8P/Lv879xL/N/zf8n/T/23/Gfxn8Z8p/VkB
@@ -370,7 +370,7 @@
   <data name="BtnJoinDiscord.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAmsAAAHWCAYAAAAo8M7SAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wAAADsABataJCQAAJwBJREFUeF7t3Q2R7Ea2LtCBMBAMwRAMwRAGgiEYgiEYgiEYgiEMBDOYq6/d6lvd
+        vwAADr8BOAVTJAAAJwBJREFUeF7t3Q2R7Ea2LtCBMBAMwRAMwRAGgiEYgiEYgiEYgiEMBDOYq6/d6lvd
         vetXKSlTWivii3hnP8+5p7tU0lZmKvWv//3vfyKybX6Y8uOXmsgIceyK7JCyKCJN8u8pP035ZcpvU/6c
         Mvt7Si581f9OpMfkeP7vlNlfU/6Y8uuUHOeOZ5GVUhZF5OnkQvXzlFy4cgG7vKhd8/uU6u8S6TE5tu/J
         TUhuSnJz8p8pRuFEGqQsisjNXDZmuTDlAvUqFzMZIRlVW3Kca+BEFqQsishH5qnMFo1ZJX9n9X9XpKdk

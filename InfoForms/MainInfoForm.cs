@@ -19,23 +19,16 @@ namespace QMM.Info_Forms
         {
             get
             {
-                CreateParams ShadowParams = base.CreateParams;
+                CreateParams shadowParams = base.CreateParams;
                 if (Properties.Settings.Default.FormShadows)
-                {
-                    ShadowParams.ExStyle |= 0x02000000;
-                    ShadowParams.ClassStyle |= 0x00020000;
-                }
-                return ShadowParams;
+                    shadowParams.ClassStyle |= 0x00020000;
+                return shadowParams;
             }
         }
 
-        private void MoveWindow(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                CFormUtil.GrabWindow(this.Handle);
-            }
-        }
+        private void MoveWindow(object sender, MouseEventArgs e)
+        { if (e.Button == MouseButtons.Left) CFormUtil.GrabWindow(Handle); }
+
         private void MainInfoForm_MouseHover(object sender, EventArgs e)
         {
             var controlsToModify = new Control[] { BtnClose };
