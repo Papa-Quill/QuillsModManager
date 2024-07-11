@@ -32,13 +32,8 @@ namespace QMM
         public MainForm()
         {
             InitializeComponent();
-
-            var controlsToModify = new Control[] {
-                BtnClose, BtnMinimize, BtnInfo, BtnUserSettings,
-                BtnAddMod, BtnRefreshModList, BtnRemoveMod, BtnLaunchGame,
-                BtnCloseInfo, BtnCreateBackup, BtnRestoreBackup, BtnBackupSave,
-                BtnRestoreSave };
-            CUpdateTheme.Refresh(this, controlsToModify);
+            SettingsChangedEvent(this, null);
+            Properties.Settings.Default.SettingsLoaded += SettingsChangedEvent;
             CreateButtonsFromModTitles();
 
             RefreshTimer = new Timer();
@@ -116,12 +111,16 @@ namespace QMM
         private void MoveWindow(object sender, MouseEventArgs e)
         { if (e.Button == MouseButtons.Left) CFormUtil.GrabWindow(Handle); }
 
-        private void PanelSEEBackground_MouseHover(object sender, EventArgs e)
+        private void SettingsChangedEvent(object sender, System.Configuration.SettingsLoadedEventArgs e)
         {
             var controlsToModify = new Control[] {
                 BtnClose, BtnMinimize, BtnInfo, BtnUserSettings,
-                BtnAddMod };
+                BtnAddMod, BtnRefreshModList, BtnRemoveMod, BtnLaunchGame,
+                BtnCloseInfo, BtnCreateBackup, BtnRestoreBackup, BtnBackupSave,
+                BtnRestoreSave };
             CUpdateTheme.Refresh(this, controlsToModify);
+            CNotification.CreateNotif(Color.White, "Settings Changed");
+            BtnRefreshModList.PerformClick();
         }
         #endregion
 
@@ -137,13 +136,9 @@ namespace QMM
         {
             int count = 0;
             if (!directoriesOnly)
-            {
                 count += Directory.EnumerateFiles(dir).Count();
-            }
             foreach (string subDir in Directory.EnumerateDirectories(dir))
-            {
-                count += DirectoryFileMeasurement(subDir, false);
-            }
+                { count += DirectoryFileMeasurement(subDir, false); }
             return count;
         }
 
@@ -151,21 +146,13 @@ namespace QMM
         {
             if (RefreshQueued)
             {
-                var controlsToModify = new Control[] {
-                    BtnClose, BtnMinimize, BtnInfo, BtnUserSettings,
-                    BtnAddMod, BtnRefreshModList, BtnRemoveMod, BtnLaunchGame,
-                    BtnCloseInfo, BtnCreateBackup, BtnRestoreBackup, BtnBackupSave,
-                    BtnRestoreSave };
-                CUpdateTheme.Refresh(this, controlsToModify);
                 CreateButtonsFromModTitles();
                 RefreshQueued = false;
             }
         }
 
-        private void BtnCreateButtons_Click(object sender, EventArgs e)
-        {
-            CreateButtonsFromModTitles();
-        }
+        private void BtnRefreshButtons_Click(object sender, EventArgs e)
+        { CreateButtonsFromModTitles(); }
 
         private void AdjustButtonWidths()
         {
@@ -174,7 +161,6 @@ namespace QMM
             if (buttonCount > 10)
             {
                 int newWidth = PanelModList.Width - 40;
-
                 foreach (Guna2Button button in PanelModList.Controls.OfType<Guna2Button>())
                 {
                     button.Width = newWidth;
@@ -191,7 +177,6 @@ namespace QMM
             if (File.Exists(CModListManager.ModListFilePath))
             {
                 List<Mod> modList = DeserializeModList();
-
                 foreach (Mod mod in modList)
                 {
                     ContextMenuStrip contextMenu = CreateModContextMenu(mod);
@@ -212,7 +197,6 @@ namespace QMM
         private ContextMenuStrip CreateModContextMenu(Mod mod)
         {
             CustomContextMenuStripRenderer customRenderer = new CustomContextMenuStripRenderer();
-
             ContextMenuStrip contextMenu = new ContextMenuStrip
             {
                 Renderer = customRenderer,
@@ -261,9 +245,9 @@ namespace QMM
             button.CheckedState.BorderColor = Properties.Settings.Default.DetailActive;
 
             if (Properties.Settings.Default.RoundedControls)
-            { button.BorderRadius = Properties.Settings.Default.BorderRadius; }
+                button.BorderRadius = Properties.Settings.Default.BorderRadius;
             else
-            { button.BorderRadius = 0; }
+                button.BorderRadius = 0;
 
             button.Click += Button_Click;
 
@@ -282,7 +266,6 @@ namespace QMM
         {
             List<Mod> modList = CModListManager.LoadModList();
             int index = modList.FindIndex(mod => mod.ModTitle == modTitle);
-
             if (index >= 0 && index < modList.Count)
             {
                 int newIndex = index + direction;
@@ -312,14 +295,10 @@ namespace QMM
                     Focus();
                 }
                 else
-                {
                     CNotification.CreateNotif(Color.Red, "Mod not found.");
-                }
             }
             else
-            {
                 CNotification.CreateNotif(Color.Red, "Invalid button text format.");
-            }
         }
 
         private Mod GetModByTitle(string modTitle)
@@ -351,9 +330,7 @@ namespace QMM
         }
 
         private void LabelMadeBy_Click(object sender, EventArgs e)
-        {
-            Process.Start("https://github.com/Papa-Quill/");
-        }
+        { Process.Start("https://github.com/Papa-Quill/"); }
 
         private void CopyDirectory(string sourceDir, string destinationDir, bool directoriesOnly, string progressMessage)
         {
@@ -435,9 +412,7 @@ namespace QMM
             List<Form> openForms = CFormUtil.GetAllOpenForms();
 
             foreach (Form form in openForms)
-            {
-                CFormUtil.Close(form);
-            }
+                { CFormUtil.Close(form); }
         }
 
         private void BtnMinimize_Click(object sender, EventArgs e)
@@ -588,9 +563,7 @@ namespace QMM
                     CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, "Backup complete!");
                 }
                 else
-                {
                     CNotification.CreateNotif(Properties.Settings.Default.WarningColor, "Could not find: " + dataFolder);
-                }
             }
             catch (Exception ex)
             {
@@ -655,17 +628,13 @@ namespace QMM
                         File.Copy(ccSavePath, ccSaveBackupPath, true);
                     }
                     else
-                    {
                         CNotification.CreateNotif(Properties.Settings.Default.WarningColor, "Could not locate cc_save.dat in user data!");
-                    }
                 }
                 if (backedAtLeastOne)
                     CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, $"Backed save data to: {savesDirectory}");
             }
             else
-            {
                 CNotification.CreateNotif(Properties.Settings.Default.WarningColor, $"No Directory found at:{Environment.NewLine}{userDataFolder}");
-            }
         }
 
         private void BtnRestoreSave_Click(object sender, EventArgs e)
@@ -693,14 +662,10 @@ namespace QMM
                         CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, "Save data restored from backup!");
                     }
                     else
-                    {
                         CNotification.CreateNotif(Properties.Settings.Default.WarningColor, "Could not locate cc_save.dat in user data!");
-                    }
                 }
                 else
-                {
                     CNotification.CreateNotif(Properties.Settings.Default.WarningColor, "Backup save file could not be identified!");
-                }
             }
         }
         #endregion

@@ -30,9 +30,7 @@ namespace QMM.Info_Forms
                 Location = new Point(0, lastNotification.Bottom);
             }
             else
-            {
                 Location = new Point(0, 0);
-            }
 
             activeNotifications.Add(this);
             FormClosed += Notification_FormClosed;
@@ -74,9 +72,7 @@ namespace QMM.Info_Forms
         {
             activeNotifications.Remove(this);
             foreach (var notification in activeNotifications)
-            {
-                notification.Top -= Height;
-            }
+                { notification.Top -= Height; }
         }
 
         void FadeOut(object sender, EventArgs e)
@@ -94,9 +90,7 @@ namespace QMM.Info_Forms
 
         #region Form interactions
         private void NotifBox_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        { Close(); }
 
         private void NotifBox_MouseHover(object sender, EventArgs e)
         { CloseTimer.Enabled = false; Opacity = 1; }

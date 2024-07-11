@@ -10,8 +10,8 @@ namespace QMM.Info_Forms
         public MainInfoForm()
         {
             InitializeComponent();
-            var controlsToModify = new Control[] { BtnClose, BtnJoinDiscord, BtnOpenRepo };
-            CUpdateTheme.Refresh(this, controlsToModify);
+            SettingsChangedEvent(this, null);
+            Properties.Settings.Default.SettingsLoaded += SettingsChangedEvent;
         }
 
         #region Form base
@@ -29,9 +29,9 @@ namespace QMM.Info_Forms
         private void MoveWindow(object sender, MouseEventArgs e)
         { if (e.Button == MouseButtons.Left) CFormUtil.GrabWindow(Handle); }
 
-        private void MainInfoForm_MouseHover(object sender, EventArgs e)
+        private void SettingsChangedEvent(object sender, System.Configuration.SettingsLoadedEventArgs e)
         {
-            var controlsToModify = new Control[] { BtnClose };
+            var controlsToModify = new Control[] { BtnClose, BtnJoinDiscord, BtnOpenRepo };
             CUpdateTheme.Refresh(this, controlsToModify);
         }
         #endregion
@@ -67,13 +67,10 @@ namespace QMM.Info_Forms
 
         #region Button Functions
         private void BtnJoinDiscord_Click(object sender, EventArgs e)
-        {
-            Process.Start("https://discord.gg/NdPYPbUncU");
-        }
+        { Process.Start("https://discord.gg/NdPYPbUncU"); }
+
         private void LabelWatermark_Click(object sender, EventArgs e)
-        {
-            Process.Start("https://github.com/Papa-Quill/");
-        }
+        { Process.Start("https://github.com/Papa-Quill/"); }
         #endregion
     }
 }

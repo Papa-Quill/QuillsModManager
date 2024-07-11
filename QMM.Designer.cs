@@ -382,7 +382,7 @@
             this.BtnRefreshModList.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(36)))));
             this.BtnRefreshModList.Size = new System.Drawing.Size(41, 30);
             this.BtnRefreshModList.TabIndex = 6;
-            this.BtnRefreshModList.Click += new System.EventHandler(this.BtnCreateButtons_Click);
+            this.BtnRefreshModList.Click += new System.EventHandler(this.BtnRefreshButtons_Click);
             // 
             // BtnAddMod
             // 

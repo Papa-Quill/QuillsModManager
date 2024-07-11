@@ -147,6 +147,7 @@ namespace QMM
             try
             {
                 Properties.Settings.Default.Save();
+                Properties.Settings.Default.Reload();
                 Settings settings = new Settings();
                 settings.SaveSettingsToJson();
                 CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, "Save Successful!");

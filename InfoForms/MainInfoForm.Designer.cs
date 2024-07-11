@@ -178,7 +178,6 @@
             this.PanelHeader.Name = "PanelHeader";
             this.PanelHeader.Size = new System.Drawing.Size(396, 60);
             this.PanelHeader.TabIndex = 17;
-            this.PanelHeader.Enter += new System.EventHandler(this.MainInfoForm_MouseHover);
             this.PanelHeader.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveWindow);
             // 
             // BtnClose
@@ -264,7 +263,6 @@
             this.Name = "MainInfoForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "QMM | Main Info Form";
-            this.Enter += new System.EventHandler(this.MainInfoForm_MouseHover);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveWindow);
             this.PanelBody.ResumeLayout(false);
             this.PanelBody.PerformLayout();

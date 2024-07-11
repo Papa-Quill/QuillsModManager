@@ -61,14 +61,10 @@ namespace QMM.Info_Forms
         }
 
         public void SetLocationRelativeToForm1()
-        {
-            Location = new Point(mainFormInstance.Location.X + 648, mainFormInstance.Location.Y);
-        }
+        { Location = new Point(mainFormInstance.Location.X + 648, mainFormInstance.Location.Y); }
 
         private void LocationUpdateTimer_Tick(object sender, EventArgs e)
-        {
-            SetLocationRelativeToForm1();
-        }
+        { SetLocationRelativeToForm1(); }
         #endregion
 
         #region Button Functions
@@ -91,9 +87,7 @@ namespace QMM.Info_Forms
                     }
                 }
                 else
-                {
                     CNotification.CreateNotif(Properties.Settings.Default.WarningColor, "The specified mod location does not exist.");
-                }
             }
         }
         #endregion

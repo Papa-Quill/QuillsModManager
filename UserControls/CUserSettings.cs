@@ -37,9 +37,7 @@ namespace QMM
         {
             LoadSettingsFromConfig();
             if (File.Exists(settingsFilePath))
-            {
                 LoadSettingsFromJson();
-            }
         }
 
         private void LoadSettingsFromConfig()
@@ -48,21 +46,13 @@ namespace QMM
             foreach (PropertyInfo property in properties)
             {
                 if (property.PropertyType == typeof(Color))
-                {
                     property.SetValue(this, Properties.Settings.Default[property.Name]);
-                }
                 else if (property.PropertyType == typeof(string))
-                {
                     property.SetValue(this, Properties.Settings.Default[property.Name]);
-                }
                 else if (property.PropertyType == typeof(bool))
-                {
                     property.SetValue(this, Properties.Settings.Default[property.Name]);
-                }
                 else if (property.PropertyType == typeof(int))
-                {
                     property.SetValue(this, Properties.Settings.Default[property.Name]);
-                }
             }
         }
 
@@ -76,21 +66,13 @@ namespace QMM
                 foreach (PropertyInfo property in typeof(Settings).GetProperties())
                 {
                     if (property.PropertyType == typeof(Color))
-                    {
                         property.SetValue(this, ColorTranslator.FromHtml((string)jObject[property.Name]));
-                    }
                     else if (property.PropertyType == typeof(string))
-                    {
                         property.SetValue(this, (string)jObject[property.Name]);
-                    }
                     else if (property.PropertyType == typeof(bool))
-                    {
                         property.SetValue(this, (bool)jObject[property.Name]);
-                    }
                     else if (property.PropertyType == typeof(int))
-                    {
                         property.SetValue(this, (int)jObject[property.Name]);
-                    }
                 }
             }
             catch (Exception ex)
@@ -110,21 +92,13 @@ namespace QMM
                 foreach (PropertyInfo property in properties)
                 {
                     if (property.PropertyType == typeof(Color))
-                    {
                         jObject[property.Name] = ColorTranslator.ToHtml((Color)property.GetValue(Properties.Settings.Default));
-                    }
                     else if (property.PropertyType == typeof(string))
-                    {
                         jObject[property.Name] = (string)property.GetValue(Properties.Settings.Default);
-                    }
                     else if (property.PropertyType == typeof(bool))
-                    {
                         jObject[property.Name] = (bool)property.GetValue(Properties.Settings.Default);
-                    }
                     else if (property.PropertyType == typeof(int))
-                    {
                         jObject[property.Name] = (int)property.GetValue(Properties.Settings.Default);
-                    }
                 }
 
                 File.WriteAllText(settingsFilePath, jObject.ToString());
@@ -134,21 +108,13 @@ namespace QMM
                     if (jObject[property.Name] != null)
                     {
                         if (property.PropertyType == typeof(Color))
-                        {
                             property.SetValue(Properties.Settings.Default, ColorTranslator.FromHtml((string)jObject[property.Name]));
-                        }
                         else if (property.PropertyType == typeof(string))
-                        {
                             property.SetValue(Properties.Settings.Default, (string)jObject[property.Name]);
-                        }
                         else if (property.PropertyType == typeof(bool))
-                        {
                             property.SetValue(Properties.Settings.Default, (bool)jObject[property.Name]);
-                        }
                         else if (property.PropertyType == typeof(int))
-                        {
                             property.SetValue(Properties.Settings.Default, (int)jObject[property.Name]);
-                        }
                     }
                 }
 
