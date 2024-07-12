@@ -168,10 +168,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="QuillDiamondNew64.ico" />
+    <None Include="Resources\Azonix.ttf" />
     <None Include="Resources\NoImage.png" />
     <None Include="Resources\AnimatedQuillDiamond.gif" />
     <None Include="Resources\QuillDiamondNew64.ico" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y "$(ProjectDir)resources\Azonix.ttf" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

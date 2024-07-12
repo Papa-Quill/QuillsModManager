@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Text;
 using System.IO;
 using System.Windows.Forms;
 
@@ -11,13 +13,35 @@ namespace QMM
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            string fontName = "Azonix";
+            if (IsFontInstalled(fontName))
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                LoadSettingsFromJson();
+                Application.Run(new MainForm());
+            }
+            else
+            {
+                Process.Start(fontName + ".ttf");
+                MessageBox.Show("Please install the Azonix font.", "Font Missing!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+        }
 
-            // Load settings from JSON file
-            LoadSettingsFromJson();
-
-            Application.Run(new MainForm());
+        static bool IsFontInstalled(string fontName)
+        {
+            using (InstalledFontCollection fontsCollection = new InstalledFontCollection())
+            {
+                foreach (FontFamily fontFamily in fontsCollection.Families)
+                {
+                    if (fontFamily.Name.Equals(fontName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         static void LoadSettingsFromJson()
@@ -83,6 +107,5 @@ namespace QMM
                 Console.WriteLine("Error loading settings from JSON: " + ex.Message);
             }
         }
-
     }
 }
