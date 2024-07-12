@@ -4,6 +4,7 @@ using QMM.Info_Forms;
 using QMM.Util;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -40,6 +41,13 @@ namespace QMM
             RefreshTimer.Interval = 1000;
             RefreshTimer.Tick += Timer_Tick;
             RefreshTimer.Start();
+
+            // Initialize BackgroundWorker
+            bgWorker = new BackgroundWorker();
+            bgWorker.WorkerReportsProgress = true;
+            bgWorker.DoWork += bgWorker_DoWork;
+            bgWorker.ProgressChanged += bgWorker_ProgressChanged;
+            bgWorker.RunWorkerCompleted += bgWorker_RunWorkerCompleted;
         }
 
         #region Hotkeys
@@ -132,15 +140,23 @@ namespace QMM
             fModInfo.SetLocationRelativeToForm1();
         }
 
-        static int DirectoryFileMeasurement(string dir, bool directoriesOnly)
+        private int DirectoryFileMeasurement(string dir, bool directoriesOnly)
         {
-            int count = 0;
+            int fileCount = 0;
+
             if (!directoriesOnly)
-                count += Directory.EnumerateFiles(dir).Count();
-            foreach (string subDir in Directory.EnumerateDirectories(dir))
-                { count += DirectoryFileMeasurement(subDir, false); }
-            return count;
+            {
+                fileCount += Directory.GetFiles(dir).Length;
+            }
+
+            foreach (string subDir in Directory.GetDirectories(dir))
+            {
+                fileCount += DirectoryFileMeasurement(subDir, directoriesOnly);
+            }
+
+            return fileCount;
         }
+
 
         private void Timer_Tick(object sender, EventArgs e)
         {
@@ -332,6 +348,7 @@ namespace QMM
         private void LabelMadeBy_Click(object sender, EventArgs e)
         { Process.Start("https://github.com/Papa-Quill/"); }
 
+        private BackgroundWorker bgWorker;
         private void CopyDirectory(string sourceDir, string destinationDir, bool directoriesOnly, string progressMessage)
         {
             ProgressBar.Value = 0;
@@ -341,34 +358,158 @@ namespace QMM
             if (!Directory.Exists(destinationDir))
                 Directory.CreateDirectory(destinationDir);
 
-            var sourceDirectoryInfo = new DirectoryInfo(sourceDir);
-            if (!sourceDirectoryInfo.Exists)
-                throw new DirectoryNotFoundException($"Source directory not found: {sourceDirectoryInfo.FullName}");
+            var args = new CopyDirectoryArgs(sourceDir, destinationDir, directoriesOnly, progressMessage)
+            {
+                OperationType = "backup" // Set the operation type here
+            };
 
+            // Start the background worker
+            bgWorker.RunWorkerAsync(args);
+        }
+
+        private void CopyDirectoryRecursive(string sourceDir, string destinationDir, bool directoriesOnly, string progressMessage, BackgroundWorker worker, DoWorkEventArgs e)
+        {
             try
             {
+                Debug.WriteLine("Copying directory from " + sourceDir + " to " + destinationDir);
+
                 if (!directoriesOnly)
                 {
                     foreach (string file in Directory.GetFiles(sourceDir))
                     {
                         string targetFilePath = Path.Combine(destinationDir, Path.GetFileName(file));
-                        UpdateProgressLabel(progressMessage, Path.GetFileName(file));
+                        Debug.WriteLine("Copying file " + file + " to " + targetFilePath);
                         File.Copy(file, targetFilePath, true);
-                        ProgressBar.Value++;
+
+                        var state = new CopyProgressState
+                        {
+                            ProgressMessage = progressMessage,
+                            CurrentFile = Path.GetFileName(file) // Only the file name
+                        };
+                        worker.ReportProgress(0, state); // Report progress with CopyProgressState
                     }
-                    HideProgressControls();
                 }
 
-                foreach (DirectoryInfo subDir in sourceDirectoryInfo.GetDirectories())
+                foreach (string subDir in Directory.GetDirectories(sourceDir))
                 {
-                    string newDestinationDir = Path.Combine(destinationDir, subDir.Name);
-                    CopyDirectory(subDir.FullName, newDestinationDir, false, progressMessage);
+                    string newDestinationDir = Path.Combine(destinationDir, Path.GetFileName(subDir));
+                    Debug.WriteLine("Creating directory " + newDestinationDir);
+                    Directory.CreateDirectory(newDestinationDir);
+                    CopyDirectoryRecursive(subDir, newDestinationDir, directoriesOnly, progressMessage, worker, e);
                 }
             }
             catch (Exception ex)
             {
-                CNotification.CreateNotif(Properties.Settings.Default.WarningColor, $"Error: {ex.Message}");
-                HideProgressControls();
+                e.Result = ex;
+                Debug.WriteLine("Exception during recursive copy: " + ex.Message);
+            }
+        }
+
+        private void bgWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            if (e.Argument is CopyDirectoryArgs args)
+            {
+                int totalFiles = DirectoryFileMeasurement(args.SourceDir, args.DirectoriesOnly);
+                int filesCopied = 0;
+
+                CopyDirectoryRecursive(args.SourceDir, args.DestinationDir, args.DirectoriesOnly, args.ProgressMessage, sender as BackgroundWorker, e, ref filesCopied, totalFiles);
+            }
+        }
+
+        private void CopyDirectoryRecursive(string sourceDir, string destinationDir, bool directoriesOnly, string progressMessage, BackgroundWorker worker, DoWorkEventArgs e, ref int filesCopied, int totalFiles)
+        {
+            try
+            {
+                Debug.WriteLine("Copying directory from " + sourceDir + " to " + destinationDir);
+
+                if (!directoriesOnly)
+                {
+                    foreach (string file in Directory.GetFiles(sourceDir))
+                    {
+                        string targetFilePath = Path.Combine(destinationDir, Path.GetFileName(file));
+                        Debug.WriteLine("Copying file " + file + " to " + targetFilePath);
+                        File.Copy(file, targetFilePath, true);
+
+                        filesCopied++;
+                        int progressPercentage = (int)((float)filesCopied / totalFiles * 100);
+
+                        var state = new CopyProgressState
+                        {
+                            ProgressMessage = progressMessage,
+                            CurrentFile = Path.GetFileName(file)
+                        };
+                        worker.ReportProgress(progressPercentage, state); // Report progress with percentage and state
+                    }
+                }
+
+                foreach (string subDir in Directory.GetDirectories(sourceDir))
+                {
+                    string newDestinationDir = Path.Combine(destinationDir, Path.GetFileName(subDir));
+                    Debug.WriteLine("Creating directory " + newDestinationDir);
+                    Directory.CreateDirectory(newDestinationDir);
+                    CopyDirectoryRecursive(subDir, newDestinationDir, directoriesOnly, progressMessage, worker, e, ref filesCopied, totalFiles);
+                }
+            }
+            catch (Exception ex)
+            {
+                e.Result = ex;
+                Debug.WriteLine("Exception during recursive copy: " + ex.Message);
+            }
+        }
+
+        private void bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            ProgressBar.Value = e.ProgressPercentage;
+
+            if (e.UserState is CopyProgressState state)
+            {
+                UpdateProgressLabel(state.ProgressMessage, state.CurrentFile);
+            }
+        }
+
+        public class CopyProgressState
+        {
+            public string ProgressMessage { get; set; }
+            public string CurrentFile { get; set; }
+        }
+
+
+        private void bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Error != null)
+            {
+                CNotification.CreateNotif(Properties.Settings.Default.WarningColor, $"Error: {e.Error.Message}");
+            }
+            else if (e.Cancelled)
+            {
+                // Handle cancellation if needed
+            }
+            else
+            {
+                // Copy completed successfully
+            }
+
+            HideProgressControls();
+        }
+
+        public class CopyDirectoryArgs
+        {
+            public string SourceDir { get; set; }
+            public string DestinationDir { get; set; }
+            public bool DirectoriesOnly { get; set; }
+            public string ProgressMessage { get; set; }
+            public string OperationType { get; set; } // Added to differentiate between backup and restore
+
+            // Parameterless constructor
+            public CopyDirectoryArgs() { }
+
+            // Constructor
+            public CopyDirectoryArgs(string sourceDir, string destinationDir, bool directoriesOnly, string progressMessage)
+            {
+                SourceDir = sourceDir;
+                DestinationDir = destinationDir;
+                DirectoriesOnly = directoriesOnly;
+                ProgressMessage = progressMessage;
             }
         }
 
@@ -563,49 +704,64 @@ namespace QMM
                     CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, "Backup complete!");
                 }
                 else
+                {
                     CNotification.CreateNotif(Properties.Settings.Default.WarningColor, "Could not find: " + dataFolder);
+                    Debug.WriteLine("Data folder not found: " + dataFolder);
+                }
             }
             catch (Exception ex)
             {
                 CNotification.CreateNotif(Properties.Settings.Default.WarningColor, $"An error occurred while creating the backup: {ex.Message}");
+                Debug.WriteLine("Exception during backup creation: " + ex.Message);
             }
         }
-        
+
+
         private void BtnCloseInfo_Click(object sender, EventArgs e)
         { CFormUtil.CloseAllOpenModInfoForms(); }
 
         private void BtnRestoreBackup_Click(object sender, EventArgs e)
         {
             ProgressBar.Value = 0;
-            CheckGameDir();
-            if (!Directory.Exists(gameDir))
-                return;
 
-            if (!Directory.Exists(backupFolder))
+            CheckGameDir();
+            if (!Directory.Exists(gameDir) || !File.Exists(Path.Combine(gameDir, "castle.exe")))
             {
-                CNotification.CreateNotif(Properties.Settings.Default.WarningColor, "Could not locate a backup!");
+                CNotification.CreateNotif(Properties.Settings.Default.WarningColor, "Please select a valid game directory!");
                 return;
             }
 
-            string backupMessage = "Are you sure you want to restore your backup?\nThis may take a while!";
-            DialogResult dialogResult = CMessageBox.Show("Restore Backup", backupMessage, true);
+            string restoreMessage = "Are you sure you want to restore from the backup?\nThis will overwrite existing files!";
+            DialogResult dialogResult = CMessageBox.Show("Restore Backup", restoreMessage, true);
             if (dialogResult != DialogResult.Yes)
                 return;
 
             try
             {
-                if (!Directory.Exists(dataFolder))
-                    Directory.CreateDirectory(dataFolder);
-
-                ProgressBar.Maximum = DirectoryFileMeasurement(backupFolder, false);
-                CopyDirectory(backupFolder, dataFolder, false, "Restoring Backup: ");
-                CNotification.CreateNotif(Properties.Settings.Default.SuccessColor, "Backup restored!");
+                if (Directory.Exists(backupFolder))
+                {
+                    ProgressBar.Visible = true; // Show the progress bar
+                    LabelProgress.Visible = true; // Show the progress label
+                    ProgressBar.Maximum = DirectoryFileMeasurement(backupFolder, false);
+                    var args = new CopyDirectoryArgs(backupFolder, dataFolder, false, "Restoring Backup: ")
+                    {
+                        OperationType = "restore" // Indicate that this is a restore operation
+                    };
+                    bgWorker.RunWorkerAsync(args);
+                }
+                else
+                {
+                    CNotification.CreateNotif(Properties.Settings.Default.WarningColor, "Could not find backup folder: " + backupFolder);
+                    Debug.WriteLine("Backup folder not found: " + backupFolder);
+                }
             }
             catch (Exception ex)
             {
                 CNotification.CreateNotif(Properties.Settings.Default.WarningColor, $"An error occurred while restoring the backup: {ex.Message}");
+                Debug.WriteLine("Exception during backup restore: " + ex.Message);
             }
         }
+
 
         private void BtnBackupSave_Click(object sender, EventArgs e)
         {
