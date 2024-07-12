@@ -40,7 +40,6 @@ namespace QMM
                         new JProperty("SuccessColor", ColorTranslator.ToHtml(Properties.Settings.Default.SuccessColor)),
                         new JProperty("WarningColor", ColorTranslator.ToHtml(Properties.Settings.Default.WarningColor)),
                         new JProperty("NotifColor", ColorTranslator.ToHtml(Properties.Settings.Default.NotifColor)),
-                        new JProperty("Version", Properties.Settings.Default.Version),
                         new JProperty("GameDir", Properties.Settings.Default.GameDir),
                         new JProperty("UserDataDir", Properties.Settings.Default.UserDataDir),
                         new JProperty("RoundedControls", Properties.Settings.Default.RoundedControls),
@@ -69,7 +68,6 @@ namespace QMM
                 Properties.Settings.Default.SuccessColor = ColorTranslator.FromHtml((string)jObject["SuccessColor"]);
                 Properties.Settings.Default.WarningColor = ColorTranslator.FromHtml((string)jObject["WarningColor"]);
                 Properties.Settings.Default.NotifColor = ColorTranslator.FromHtml((string)jObject["NotifColor"]);
-                Properties.Settings.Default.Version = (string)jObject["Version"];
                 Properties.Settings.Default.GameDir = (string)jObject["GameDir"];
                 Properties.Settings.Default.UserDataDir = (string)jObject["UserDataDir"];
                 Properties.Settings.Default.RoundedControls = (bool)jObject["RoundedControls"];
