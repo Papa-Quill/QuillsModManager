@@ -19,4 +19,4 @@
 
 ## Preview
 
-[Application Preview/Nexus Page](https://github.com/Papa-Quill/QuillsModManager)
+[Application Preview/Nexus Page](https://www.nexusmods.com/castlecrashers/mods/4)
